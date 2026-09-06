@@ -16,13 +16,11 @@
 |---|---|---|---|
 | `orchard.jpg` | Οπωρώνας / καρποί στο δέντρο | 3:2 | index — hero (⚑ PHOTO 01) |
 | `step-1-fruit.jpg` | Καρποί πάνω στα δέντρα | 4:3 | index — βήμα 1 (⚑ PHOTO 02) |
-| `step-2-harvest.jpg` | Καλάθια με φρούτα | 4:3 | index — βήμα 2 (⚑ PHOTO 03) |
 | `step-3-cooking.jpg` | Προετοιμασία / βράσιμο | 4:3 | index — βήμα 3 (⚑ PHOTO 04) |
 | `step-4-jars.jpg` | Τελικά βάζα | 4:3 | index — βήμα 4 (⚑ PHOTO 05) |
 
 | `season-spring.jpg` | Ανοιξιάτικοι καρποί | 3:2 | epoxes (⚑ PHOTO 08) |
 | `season-summer.jpg` | Αχλάδια στο δέντρο | 3:2 | epoxes (⚑ PHOTO 09) |
-| `season-autumn.jpg` | Φθινοπωρινή συγκομιδή | 3:2 | epoxes (⚑ PHOTO 10) |
 | `season-winter.jpg` | Λωτοί / κυδώνια | 3:2 | epoxes (⚑ PHOTO 11) |
 
 ## Μεγέθη
@@ -32,6 +30,11 @@
 - Το `og-image.jpg` πρέπει να είναι ακριβώς 1200×630 για να μην κόβεται σε Facebook/WhatsApp/Viber.
 
 ## Έτοιμα
+
+- `step-2-harvest.jpg` (1200×900) και `season-autumn.jpg` (1400×933) — από τις
+  λήψεις δαμάσκηνων στο `../../Frouta Photos/`. Crop στο ratio της θέσης, ήπιο
+  ζέσταμα ώστε να δέσουν με το κρεμ, +14% αντίθεση, +12% κορεσμός, unsharp mask.
+  Το script είναι στο ιστορικό του git, στο commit που τις πρόσθεσε.
 
 - `label-kontoules.jpg`, `label-krystallia.jpg`, `label-vanilies.jpg` — οι
   πραγματικές ετικέτες, από τα 600 dpi PNG του
