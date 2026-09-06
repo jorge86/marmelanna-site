@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- ⚑ DOMAIN — Άλλαξε το https://marmelanna.netlify.app παντού όπου εμφανίζεται
+     σε αυτό το αρχείο, στο epoxes/index.html, στο sitemap.xml και στο robots.txt
+     όταν κλειδώσει το τελικό domain.  Εντοπισμός: grep -rn "marmelanna.netlify.app" . -->
+
+<title>ΜαρμελΆννα — Μικρές παραγωγές από φρούτα της Αχαΐας</title>
+<meta name="description" content="Μαρμελάδες, κομπόστες και γλυκά του κουταλιού από εποχικά φρούτα της Αχαΐας, σε περιορισμένες ποσότητες που ακολουθούν τη συγκομιδή κάθε εποχής.">
+<link rel="canonical" href="https://marmelanna.netlify.app/">
+<meta name="theme-color" content="#F5EEE2">
+<meta name="color-scheme" content="light">
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="el_GR">
+<meta property="og:site_name" content="ΜαρμελΆννα">
+<meta property="og:title" content="ΜαρμελΆννα — Μικρές παραγωγές από φρούτα της Αχαΐας">
+<meta property="og:description" content="Μαρμελάδες, κομπόστες και γλυκά του κουταλιού από εποχικά φρούτα της Αχαΐας, σε περιορισμένες ποσότητες που ακολουθούν τη συγκομιδή κάθε εποχής.">
+<meta property="og:url" content="https://marmelanna.netlify.app/">
+<meta property="og:image" content="https://marmelanna.netlify.app/images/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+<link rel="preload" href="/fonts/eb-garamond-greek.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/inter-greek.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/css/style.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "ΜαρμελΆννα",
+  "url": "https://marmelanna.netlify.app/",
+  "description": "Μικρή εποχική παραγωγή μαρμελάδων και παρασκευασμάτων από φρούτα της Αχαΐας.",
+  "areaServed": { "@type": "AdministrativeArea", "name": "Αχαΐα, Ελλάδα" }
+}
+</script>
+</head>
+
+<body>
+<a class="skip-link" href="#main">Στο περιεχόμενο</a>
+
+<!-- ═══════════════ HEADER ═══════════════ -->
+<header class="site-header">
+  <div class="wrap site-header__inner">
+    <a class="wordmark" href="/"><img src="/images/marmelanna-wordmark.png" alt="ΜαρμελΆννα — Αρχική" width="802" height="241"></a>
+    <nav class="site-nav" aria-label="Κύρια πλοήγηση">
+      <ul>
+        <li><a href="/" aria-current="page">Αρχική</a></li>
+        <li><a href="/epoxes/">Οι εποχές</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ═══════════════ HERO ═══════════════ -->
+  <section class="hero">
+    <div class="wrap hero__inner">
+      <div>
+        <p class="eyebrow">Μικρή εποχική παραγωγή</p>
+        <h1 class="hero__brand"><img src="/images/marmelanna-wordmark.png" alt="ΜαρμελΆννα" width="802" height="241" fetchpriority="high"></h1>
+        <p class="hero__tagline">Μικρές παραγωγές από φρούτα της Αχαΐας</p>
+        <p class="hero__sub">Μαρμελάδες, κομπόστες και γλυκά του κουταλιού από εποχικά φρούτα της Αχαΐας, φτιαγμένα σε περιορισμένες ποσότητες, ανάλογα με ό,τι μας δίνει κάθε εποχή.</p>
+      </div>
+
+      <!-- Διακοσμητικό κλαδί αχλαδιάς — echo της ετικέτας -->
+      <svg class="branch hero__branch" viewBox="0 0 200 320" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+        <!-- κορμός -->
+        <path d="M34 8C58 52 76 104 86 158c9 50 12 100 8 154"/>
+        <!-- φύλλα -->
+        <g transform="translate(52 46) rotate(-30)"><path d="M0 0C12-14 34-18 50-12 40 6 16 12 0 0Z"/><path d="M0 0c16-2 34-6 50-12"/></g>
+        <g transform="translate(72 96) rotate(202) scale(0.9)"><path d="M0 0C12-14 34-18 50-12 40 6 16 12 0 0Z"/><path d="M0 0c16-2 34-6 50-12"/></g>
+        <g transform="translate(85 168) rotate(-16) scale(0.85)"><path d="M0 0C12-14 34-18 50-12 40 6 16 12 0 0Z"/><path d="M0 0c16-2 34-6 50-12"/></g>
+        <g transform="translate(91 218) rotate(196) scale(0.8)"><path d="M0 0C12-14 34-18 50-12 40 6 16 12 0 0Z"/><path d="M0 0c16-2 34-6 50-12"/></g>
+        <g transform="translate(95 276) rotate(-26) scale(0.75)"><path d="M0 0C12-14 34-18 50-12 40 6 16 12 0 0Z"/><path d="M0 0c16-2 34-6 50-12"/></g>
+        <!-- αχλάδια -->
+        <g transform="translate(80 116) rotate(-8)"><path d="M0 0c1 6 2 10 3 14"/><path d="M3 14c10 0 17 10 17 21 0 12-8 20-17 20s-17-8-17-20c0-11 7-21 17-21Z"/></g>
+        <g transform="translate(93 236) rotate(7) scale(0.92)"><path d="M0 0c1 6 2 10 3 14"/><path d="M3 14c10 0 17 10 17 21 0 12-8 20-17 20s-17-8-17-20c0-11 7-21 17-21Z"/></g>
+      </svg>
+    </div>
+
+    <div class="wrap hero__photo">
+      <!-- ⚑ PHOTO 01 -->
+      <figure class="photo ratio-3x2">
+        <div class="photo__frame" role="img" aria-label="Οπωρώνας στην ορεινή Αχαΐα, με καρπούς πάνω στα δέντρα">
+          <svg viewBox="0 0 24 30" aria-hidden="true" focusable="false"><path d="M12 11c2.6 0 4.4 2.2 5.2 4.6.9 2.6.4 5.8-1.6 7.7-1.9 1.8-5.3 1.8-7.2 0-2-1.9-2.5-5.1-1.6-7.7C7.6 13.2 9.4 11 12 11Z"/><path d="M12 11V6"/><path d="M12.4 7.4c1-2.2 3-3 5-2.9-.2 2-1.4 3.8-3.4 4.2"/></svg>
+          <span class="photo__label">Φωτογραφία: καρποί πάνω στο δέντρο / οπωρώνας στην ορεινή Αχαΐα</span>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <div class="wrap"><div class="rule-flourish" role="presentation">
+    <svg class="flourish" viewBox="0 0 26 17" aria-hidden="true" focusable="false"><g fill="currentColor"><ellipse cx="13" cy="8.5" rx="2.2" ry="6.2" transform="rotate(-38 13 15)"/><ellipse cx="13" cy="8.5" rx="2.2" ry="6.2"/><ellipse cx="13" cy="8.5" rx="2.2" ry="6.2" transform="rotate(38 13 15)"/><circle cx="13" cy="15.6" r="1.1"/></g></svg>
+  </div></div>
+
+  <!-- ═══════════════ ΤΙ ΕΙΝΑΙ ═══════════════ -->
+  <section class="section" aria-labelledby="ti-einai">
+    <div class="wrap">
+      <h2 class="visually-hidden" id="ti-einai">Τι είναι η ΜαρμελΆννα</h2>
+      <div class="prose prose--intro">
+        <p>Η ΜαρμελΆννα ξεκίνησε από κάτι απλό. Υπάρχουν δέντρα που δίνουν κάθε χρόνο περισσότερο καρπό απ' όσο μπορεί να φάει ένα σπίτι, και φρούτα που μένουν εκτός αγοράς επειδή δεν έχουν το μέγεθος ή το σχήμα που ζητάει το ράφι. Αντί να πάνε χαμένα, μαζεύονται και μπαίνουν στο βάζο.</p>
+        <p>Η παραγωγή είναι μικρή και δεν ακολουθεί σταθερό πρόγραμμα. Το τι θα φτιαχτεί κάθε φορά το ορίζει η εποχή: πόσο έδωσε η χρονιά, πότε ωρίμασε ο καρπός, πόσα φρούτα προλαβαίνουν να δουλευτούν όσο είναι ακόμα φρέσκα. Μια ποικιλία μπορεί να δώσει άφθονο καρπό τη μία χρονιά και ελάχιστο την επόμενη.</p>
+        <p>Το φρούτο ορίζει και τη μορφή. Άλλα φρούτα γίνονται μαρμελάδα, άλλα κομπόστα ή γλυκό του κουταλιού — ό,τι ταιριάζει καλύτερα στον καρπό της κάθε συγκομιδής. Έτσι, κάποια προϊόντα υπάρχουν για λίγες εβδομάδες και μετά σταματούν, μέχρι να ξαναέρθει η εποχή τους.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ ΑΠΟ ΤΟ ΔΕΝΤΡΟ ΣΤΟ ΒΑΖΟ ═══════════════ -->
+  <section class="section section--tinted" aria-labelledby="diadromi">
+    <div class="wrap">
+      <div class="section__head">
+        <p class="eyebrow">Η διαδρομή</p>
+        <h2 class="section__title" id="diadromi">Από το δέντρο στο βάζο</h2>
+        <p class="lead" style="margin-top:0.75rem">Τέσσερα στάδια, όλα μέσα στην ίδια εποχή.</p>
+      </div>
+
+      <ol class="steps">
+        <li class="step">
+          <!-- ⚑ PHOTO 02 -->
+          <figure class="photo ratio-4x3">
+            <div class="photo__frame" role="img" aria-label="Ώριμοι καρποί πάνω στα δέντρα">
+              <svg viewBox="0 0 24 30" aria-hidden="true" focusable="false"><path d="M12 11c2.6 0 4.4 2.2 5.2 4.6.9 2.6.4 5.8-1.6 7.7-1.9 1.8-5.3 1.8-7.2 0-2-1.9-2.5-5.1-1.6-7.7C7.6 13.2 9.4 11 12 11Z"/><path d="M12 11V6"/><path d="M12.4 7.4c1-2.2 3-3 5-2.9-.2 2-1.4 3.8-3.4 4.2"/></svg>
+              <span class="photo__label">Φωτογραφία: καρποί πάνω στα δέντρα</span>
+            </div>
+          </figure>
+          <span class="step__num" aria-hidden="true">1</span>
+          <h3 class="step__title">Το φρούτο</h3>
+          <p class="step__text">Εποχικά φρούτα από την Αχαΐα, κυρίως από μικρές καλλιέργειες και δέντρα της ορεινής ζώνης.</p>
+        </li>
+
+        <li class="step">
+          <!-- ⚑ PHOTO 03 -->
+          <figure class="photo ratio-4x3">
+            <div class="photo__frame" role="img" aria-label="Καλάθια με φρεσκομαζεμένα φρούτα κατά τη συγκομιδή">
+              <svg viewBox="0 0 24 30" aria-hidden="true" focusable="false"><path d="M12 11c2.6 0 4.4 2.2 5.2 4.6.9 2.6.4 5.8-1.6 7.7-1.9 1.8-5.3 1.8-7.2 0-2-1.9-2.5-5.1-1.6-7.7C7.6 13.2 9.4 11 12 11Z"/><path d="M12 11V6"/><path d="M12.4 7.4c1-2.2 3-3 5-2.9-.2 2-1.4 3.8-3.4 4.2"/></svg>
+              <span class="photo__label">Φωτογραφία: συγκομιδή / καλάθια με φρούτα</span>
+            </div>
+          </figure>
+          <span class="step__num" aria-hidden="true">2</span>
+          <h3 class="step__title">Η συγκομιδή</h3>
+          <p class="step__text">Η συλλογή γίνεται όταν το φρούτο είναι στην εποχή του, όχι όταν βολεύει το πρόγραμμα.</p>
+        </li>
+
+        <li class="step">
+          <!-- ⚑ PHOTO 04 -->
+          <figure class="photo ratio-4x3">
+            <div class="photo__frame" role="img" aria-label="Προετοιμασία των φρούτων και βράσιμο της μαρμελάδας">
+              <svg viewBox="0 0 24 30" aria-hidden="true" focusable="false"><path d="M12 11c2.6 0 4.4 2.2 5.2 4.6.9 2.6.4 5.8-1.6 7.7-1.9 1.8-5.3 1.8-7.2 0-2-1.9-2.5-5.1-1.6-7.7C7.6 13.2 9.4 11 12 11Z"/><path d="M12 11V6"/><path d="M12.4 7.4c1-2.2 3-3 5-2.9-.2 2-1.4 3.8-3.4 4.2"/></svg>
+              <span class="photo__label">Φωτογραφία: προετοιμασία των φρούτων και μαγείρεμα</span>
+            </div>
+          </figure>
+          <span class="step__num" aria-hidden="true">3</span>
+          <h3 class="step__title">Η μικρή παραγωγή</h3>
+          <p class="step__text">Καθάρισμα, προετοιμασία και βράσιμο σε μικρές παρτίδες, χωρίς συντηρητικά.</p>
+        </li>
+
+        <li class="step">
+          <!-- ⚑ PHOTO 05 -->
+          <figure class="photo ratio-4x3">
+            <div class="photo__frame" role="img" aria-label="Τελικά βάζα μαρμελάδας με τις ετικέτες της ΜαρμελΆννα">
+              <svg viewBox="0 0 24 30" aria-hidden="true" focusable="false"><path d="M12 11c2.6 0 4.4 2.2 5.2 4.6.9 2.6.4 5.8-1.6 7.7-1.9 1.8-5.3 1.8-7.2 0-2-1.9-2.5-5.1-1.6-7.7C7.6 13.2 9.4 11 12 11Z"/><path d="M12 11V6"/><path d="M12.4 7.4c1-2.2 3-3 5-2.9-.2 2-1.4 3.8-3.4 4.2"/></svg>
+              <span class="photo__label">Φωτογραφία: τελικά βάζα</span>
+            </div>
+          </figure>
+          <span class="step__num" aria-hidden="true">4</span>
+          <h3 class="step__title">Το βάζο</h3>
+          <p class="step__text">Μαρμελάδα, κομπόστα ή γλυκό του κουταλιού — ό,τι ζητάει το φρούτο. Την επιλογή την κάνει η εποχή, όχι ένα σταθερό πρόγραμμα παραγωγής.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ═══════════════ ΣΥΣΤΑΤΙΚΑ ═══════════════ -->
+  <section class="section" aria-labelledby="systatika">
+    <div class="wrap">
+      <div class="section__head">
+        <p class="eyebrow">Συστατικά</p>
+        <h2 class="section__title" id="systatika">Τι έχει μέσα</h2>
+      </div>
+
+      <div class="framed recipe">
+        <ul class="recipe__list">
+          <li>Φρούτο</li>
+          <li>Ζάχαρη</li>
+          <li>Χυμός λεμονιού</li>
+        </ul>
+        <p class="recipe__strong">Τίποτα άλλο</p>
+      </div>
+
+      <div class="prose" style="margin-top:clamp(1.5rem,1.2rem+1.5vw,2.25rem)">
+        <p>Οι μαρμελάδες φτιάχνονται αποκλειστικά από αυτά τα τρία. Σε όλα τα παρασκευάσματα χρησιμοποιούνται μόνο φυσικά συστατικά, χωρίς συντηρητικά.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ ΑΥΤΗ ΤΗΝ ΕΠΟΧΗ ═══════════════ -->
+  <section class="section section--tinted" aria-labelledby="afti-tin-epoxi">
+    <div class="wrap">
+      <div class="section__head">
+        <p class="eyebrow">Αυτή την εποχή</p>
+        <h2 class="section__title" id="afti-tin-epoxi">Η παραγωγή αλλάζει μαζί με την εποχή</h2>
+      </div>
+
+      <!-- PRODUCTS-START
+           Ένα <li class="card"> ανά προϊόν. Για νέο προϊόν: αντίγραψε ένα ολόκληρο
+           <li>…</li> και άλλαξε τίτλο, ποικιλία, περιγραφή, badge και την εικόνα
+           ετικέτας. Οι ετικέτες φτιάχνονται από τα PNG του ../etiketes/ — δες README.
+           Badge classes: badge--production | badge--limited | badge--expected | badge--finished
+           Δες README → «Πώς προσθέτω προϊόν». -->
+      <ul class="cards cards--3">
+        <li class="card">
+          <figure class="photo photo--label ratio-2x1">
+            <img src="/images/label-kontoules.jpg" alt="Ετικέτα ΜαρμελΆννα: χειροποίητη μαρμελάδα αχλάδι από Κοντούλες Καρνεσίου, 370 g"
+                 width="1200" height="600" loading="lazy" decoding="async">
+          </figure>
+          <p class="card__kicker">Μαρμελάδα αχλάδι</p>
+          <h3 class="card__title"><span class="brushed">Κοντούλες Καρνεσίου</span></h3>
+          <!-- TODO: επιβεβαίωσε ή συμπλήρωσε την περιγραφή της ποικιλίας -->
+          <p class="card__text">Ποικιλία αχλαδιού από το Καρνέσι. Καλοκαιρινή συγκομιδή.</p>
+          <p class="card__meta">
+            <span class="badge badge--limited">Περιορισμένη διαθεσιμότητα</span>
+            <span>370 g</span>
+          </p>
+        </li>
+
+        <li class="card">
+          <figure class="photo photo--label ratio-2x1">
+            <img src="/images/label-krystallia.jpg" alt="Ετικέτα ΜαρμελΆννα: χειροποίητη μαρμελάδα αχλάδι από Κρυστάλλια Καρνεσίου, 370 g"
+                 width="1200" height="600" loading="lazy" decoding="async">
+          </figure>
+          <p class="card__kicker">Μαρμελάδα αχλάδι</p>
+          <h3 class="card__title"><span class="brushed">Κρυστάλλια Καρνεσίου</span></h3>
+          <!-- TODO: επιβεβαίωσε ή συμπλήρωσε την περιγραφή της ποικιλίας -->
+          <p class="card__text">Ποικιλία αχλαδιού από το Καρνέσι. Καλοκαιρινή συγκομιδή (τέλος καλοκαιριού).</p>
+          <p class="card__meta">
+            <span class="badge badge--limited">Περιορισμένη διαθεσιμότητα</span>
+            <span>370 g</span>
+          </p>
+        </li>
+
+        <li class="card">
+          <figure class="photo photo--label ratio-2x1">
+            <img src="/images/label-vanilies.jpg" alt="Ετικέτα ΜαρμελΆννα: χειροποίητη μαρμελάδα βανίλια από Λευκές Βανίλιες Καρνεσίου, 370 g"
+                 width="1200" height="600" loading="lazy" decoding="async">
+          </figure>
+          <p class="card__kicker">Μαρμελάδα βανίλια</p>
+          <h3 class="card__title"><span class="brushed">Λευκές Βανίλιες Καρνεσίου</span></h3>
+          <!-- TODO: επιβεβαίωσε ή συμπλήρωσε την περιγραφή της ποικιλίας -->
+          <p class="card__text">Ποικιλία βανίλιας από το Καρνέσι. Φθινοπωρινή συγκομιδή.</p>
+          <p class="card__meta">
+            <span class="badge badge--limited">Περιορισμένη διαθεσιμότητα</span>
+            <span>370 g</span>
+          </p>
+        </li>
+      </ul>
+      <!-- PRODUCTS-END -->
+
+      <a class="textlink" href="/epoxes/">Δες τι φέρνει κάθε εποχή</a>
+    </div>
+  </section>
+
+  <!-- ═══════════════ ΓΑΣΤΡΟΝΟΜΙΚΕΣ ΠΡΟΤΑΣΕΙΣ ═══════════════ -->
+  <section class="section" aria-labelledby="protaseis">
+    <div class="wrap">
+      <div class="section__head">
+        <p class="eyebrow">Στο τραπέζι</p>
+        <h2 class="section__title" id="protaseis">Γαστρονομικές προτάσεις</h2>
+        <p class="lead prose" style="margin-top:0.85rem">Οι μαρμελάδες δεν είναι μόνο για το πρωινό. Στέκονται εξίσου καλά δίπλα σε αλμυρά — παλαιωμένα τυριά, αλλαντικά ωρίμανσης και ψητά κρεατικά.</p>
+      </div>
+
+      <!-- PAIRINGS-START
+           Ένα <li class="pairing"> ανά οικογένεια προϊόντος. Για νέο, αντίγραψε
+           ολόκληρο το <li>…</li> και άλλαξε τίτλο και τις δύο λίστες. -->
+      <ul class="pairings">
+        <li class="pairing">
+          <p class="card__kicker">Μαρμελάδα αχλάδι</p>
+          <h3 class="pairing__title"><span class="brushed">Κοντούλες &amp; Κρυστάλλια</span></h3>
+          <dl>
+            <dt>Τυριά</dt>
+            <dd>Παλαιωμένη γραβιέρα · Μετσοβόνε · Μπλε τυρί (Roquefort, Gorgonzola) · Brie · Κοπανιστή</dd>
+            <dt>Κρέατα &amp; αλλαντικά</dt>
+            <dd>Prosciutto · Απάκι · Λούζα · Ψητό χοιρινό · Στήθος πάπιας</dd>
+          </dl>
+        </li>
+
+        <li class="pairing">
+          <p class="card__kicker">Μαρμελάδα βανίλια</p>
+          <h3 class="pairing__title"><span class="brushed">Λευκές Βανίλιες Καρνεσίου</span></h3>
+          <dl>
+            <dt>Τυριά</dt>
+            <dd>Φρέσκο κατσικίσιο (chèvre) · Ψητό μανούρι · Pecorino · Φέτα</dd>
+            <dt>Κρέατα &amp; αλλαντικά</dt>
+            <dd>Χοιρινή πανσέτα · Αγριογούρουνο · Σαλάμι αέρος · Καπνιστή μπριζόλα</dd>
+          </dl>
+        </li>
+      </ul>
+      <!-- PAIRINGS-END -->
+    </div>
+  </section>
+
+  <!-- ═══════════════ ΤΟ ΒΑΖΟ ═══════════════ -->
+  <section class="section section--tinted" aria-labelledby="to-vazo">
+    <div class="wrap">
+      <div class="section__head">
+        <p class="eyebrow">Το βάζο</p>
+        <h2 class="section__title" id="to-vazo">Τι είναι φυσιολογικό και τι όχι</h2>
+      </div>
+
+      <div class="prose">
+        <p>Τυχόν αποχρωματισμοί ή σημάδια καψίματος στο εσωτερικό του καπακιού προκύπτουν κατά τη θερμική διαδικασία αποστείρωσης. Είναι απολύτως φυσιολογικοί και δεν επηρεάζουν το προϊόν.</p>
+        <p>Μετά το άνοιγμα, το βάζο διατηρείται στο ψυγείο και καταναλώνεται μέσα σε 20 ημέρες.</p>
+      </div>
+
+      <p class="warning">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9.5"/><path d="M12 7v6"/><path d="M12 16.6v.01"/></svg>
+        <span><strong>Αν το καπάκι είναι φουσκωμένο ή το βάζο έχει πάρει αέρα, μην καταναλώσετε το προϊόν.</strong></span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════════ ΠΕΡΙΟΡΙΣΜΕΝΗ ΠΑΡΑΓΩΓΗ ═══════════════ -->
+  <section class="section section--dark" aria-labelledby="periorismeni">
+    <div class="wrap">
+      <div class="statement">
+        <svg class="flourish" viewBox="0 0 26 17" aria-hidden="true" focusable="false"><g fill="currentColor"><ellipse cx="13" cy="8.5" rx="2.2" ry="6.2" transform="rotate(-38 13 15)"/><ellipse cx="13" cy="8.5" rx="2.2" ry="6.2"/><ellipse cx="13" cy="8.5" rx="2.2" ry="6.2" transform="rotate(38 13 15)"/><circle cx="13" cy="15.6" r="1.1"/></g></svg>
+        <h2 class="statement__title" id="periorismeni">Οι ποσότητες είναι σκόπιμα μικρές</h2>
+        <p>Δεν προσπαθούμε να έχουμε τα πάντα όλο τον χρόνο. Κάθε παραγωγή ακολουθεί το φρούτο και την εποχή του. Όταν μια μικρή παρτίδα τελειώσει, το επόμενο βάζο μπορεί να χρειαστεί να περιμένει μέχρι την επόμενη συγκομιδή.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ ΔΙΑΘΕΣΗ ═══════════════ -->
+  <section class="section" aria-labelledby="diathesi">
+    <div class="wrap">
+      <p class="eyebrow">Διάθεση</p>
+      <h2 class="visually-hidden" id="diathesi">Πού θα τη βρείτε</h2>
+      <p class="distribution">Η ΜαρμελΆννα διατίθεται προς το παρόν αποκλειστικά μέσα από συνεργαζόμενα σημεία και δίκτυα διάθεσης.</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer class="site-footer">
+  <div class="wrap">
+    <svg class="seal seal--footer" viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+      <defs>
+        <path id="seal-top-home" d="M16 60 A44 44 0 0 1 104 60"/>
+        <path id="seal-bot-home" d="M16 60 A44 44 0 0 0 104 60"/>
+      </defs>
+      <circle cx="60" cy="60" r="58" fill="none" stroke="currentColor" stroke-width="1.2"/>
+      <circle cx="60" cy="60" r="54" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="1 3.5" stroke-linecap="round"/>
+      <text fill="currentColor" font-family="Inter, sans-serif" font-size="8.5" letter-spacing="1.6"><textPath href="#seal-top-home" startOffset="50%" text-anchor="middle">ΑΠΟ ΦΡΟΥΤΑ</textPath></text>
+      <text fill="currentColor" font-family="Inter, sans-serif" font-size="7.4" letter-spacing="1.15"><textPath href="#seal-bot-home" startOffset="50%" text-anchor="middle">ΤΗΣ ΟΡΕΙΝΗΣ ΑΧΑΪΑΣ</textPath></text>
+      <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M28 74 41 56 48 64 58 48 70 64 78 57 92 74"/>
+        <path d="M26 74h68"/>
+        <path d="M52 74V62h9v12"/>
+        <path d="M52 62l4.5-5 4.5 5"/>
+        <path d="M56.5 57v-6M54 53.5h5"/>
+        <path d="M36 74v-7h8v7"/>
+        <path d="M35 67l5-4 5 4"/>
+        <path d="M68 74v-6h7v6"/>
+        <path d="M67 68l4.5-3.5 4.5 3.5"/>
+      </g>
+    </svg>
+
+    <p class="site-footer__brand"><img src="/images/marmelanna-wordmark.png" alt="" width="802" height="241" loading="lazy"></p>
+    <p class="site-footer__line">Μικρή εποχική παραγωγή • Αχαΐα</p>
+
+    <nav aria-label="Πλοήγηση υποσέλιδου">
+      <ul>
+        <li><a href="/">Αρχική</a></li>
+        <li><a href="/epoxes/">Οι εποχές</a></li>
+      </ul>
+    </nav>
+
+    <p class="site-footer__motto">Ακολουθούμε το φρούτο και την εποχή του.</p>
+    <p class="site-footer__legal">© 2026 ΜαρμελΆννα</p>
+  </div>
+</footer>
+
+</body>
+</html>

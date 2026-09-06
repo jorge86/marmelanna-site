@@ -1,0 +1,819 @@
+/* ==========================================================================
+   0. ΓΡΑΜΜΑΤΟΣΕΙΡΕΣ — self-hosted (SIL Open Font License 1.1)
+   Αντί για Google Fonts: γλιτώνει δύο DNS lookups και δύο TLS handshakes από
+   το κρίσιμο μονοπάτι — 300-600ms σε 3G, που είναι ακριβώς το σενάριο του QR.
+   Μόνο greek + latin subsets. EB Garamond και Inter είναι variable fonts,
+   οπότε 400 και 500 μοιράζονται το ίδιο αρχείο (font-weight range).
+   Ανανέωση: κατέβασε ξανά από fonts.google.com — και οι δύο είναι OFL.
+   ========================================================================== */
+
+@font-face {
+  font-family: 'EB Garamond';
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url('/fonts/eb-garamond-greek.woff2') format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+
+@font-face {
+  font-family: 'EB Garamond';
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url('/fonts/eb-garamond-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'EB Garamond';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/eb-garamond-italic-greek.woff2') format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+
+@font-face {
+  font-family: 'EB Garamond';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/eb-garamond-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url('/fonts/inter-greek.woff2') format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url('/fonts/inter-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* ==========================================================================
+   ΜαρμελΆννα — design system
+   Παράγωγο των ετικετών: χαρτί, ελιά, σκούρο καφέ μελάνι, dusty coral.
+   Καμία εξάρτηση. Καμία build step.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. TOKENS
+   -------------------------------------------------------------------------- */
+:root {
+  /* Χρώματα — δειγματοληψία από τις ετικέτες */
+  --paper:        #F5EEE2;   /* φόντο ετικέτας */
+  --paper-deep:   #EBE1D0;   /* εναλλασσόμενα sections */
+  --paper-card:   #FBF7EE;   /* κάρτες, ανοιχτότερο από το φόντο */
+  --ink:          #2B2721;   /* σκούρο καφέ κειμένου */
+  --ink-soft:     #5C5449;
+  --ink-faint:    #8B8172;
+  --olive:        #4C5A39;   /* πλαίσιο & wordmark ετικέτας */
+  --olive-deep:   #333D26;   /* τίτλοι */
+  --coral:        #B96A57;   /* τα flourishes της ετικέτας */
+  --coral-soft:   #E2B4A6;   /* η ροζ πινελιά */
+  --line:         #CFC3AC;   /* λεπτές γραμμές */
+  --line-soft:    #DED3BE;
+
+  /* Τυπογραφία
+     ΚΑΝΟΝΑΣ: --font-display (serif) ΜΟΝΟ σε επικεφαλίδες h1-h4 και σε λίγα
+     ρητά display στοιχεία (hero tagline, λίστα συστατικών, motto υποσέλιδου,
+     αριθμοί βημάτων). Κάθε τρεχούμενο κείμενο — παράγραφοι, leads, links,
+     badges, chips, λεζάντες — είναι --font-body (sans). Χωρίς εξαιρέσεις:
+     serif παράγραφοι δίπλα σε sans παραγράφους διαβάζονται σαν λάθος. */
+  --font-display: "EB Garamond", "Iowan Old Style", Georgia, "Times New Roman", serif;
+  --font-body:    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  /* Κλίμακα — fluid, mobile-first */
+  --step--1: clamp(0.82rem, 0.79rem + 0.15vw, 0.9rem);
+  --step-0:  clamp(1rem, 0.96rem + 0.2vw, 1.09rem);
+  --step-1:  clamp(1.18rem, 1.1rem + 0.4vw, 1.4rem);
+  --step-2:  clamp(1.45rem, 1.28rem + 0.85vw, 1.95rem);
+  --step-3:  clamp(1.85rem, 1.55rem + 1.5vw, 2.75rem);
+  --step-4:  clamp(2.4rem, 1.85rem + 2.7vw, 4rem);
+
+  /* Ρυθμός */
+  --gap:      clamp(1rem, 0.8rem + 1vw, 1.75rem);
+  --section:  clamp(3.25rem, 2.4rem + 4.2vw, 6.5rem);
+  --measure:  38rem;      /* πλάτος ανάγνωσης */
+  --wide:     70rem;      /* μέγιστο πλάτος σελίδας */
+  --radius:   3px;        /* οι ετικέτες έχουν σχεδόν ίσιες γωνίες */
+}
+
+/* --------------------------------------------------------------------------
+   2. RESET / BASE
+   -------------------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  /* Η παλέτα είναι σκόπιμα μονόδρομη (χαρτί). Χωρίς αυτό, το auto-dark
+     του Android Chrome αντιστρέφει τα χρώματα και διαλύει τη σχέση με την ετικέτα. */
+  color-scheme: light;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+
+body {
+  margin: 0;
+  background-color: var(--paper);
+  /* Διακριτική υφή χαρτιού: inline SVG turbulence, μηδέν extra request.
+     stitchTiles="stitch" ώστε να μην φαίνονται οι ενώσεις του tile. */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.65;
+  font-synthesis-weight: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  color: var(--olive-deep);
+  line-height: 1.15;
+  margin: 0;
+  letter-spacing: 0.005em;
+}
+
+p { margin: 0 0 1em; }
+p:last-child { margin-bottom: 0; }
+
+a { color: var(--olive); text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+a:hover { color: var(--coral); }
+
+img { max-width: 100%; height: auto; display: block; }
+
+:focus-visible {
+  outline: 2px solid var(--coral);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.skip-link {
+  position: absolute; left: 0.5rem; top: -4rem;
+  background: var(--olive-deep); color: var(--paper);
+  padding: 0.6rem 1rem; border-radius: var(--radius);
+  z-index: 50; transition: top 0.15s ease;
+}
+.skip-link:focus { top: 0.5rem; color: var(--paper); }
+
+/* --------------------------------------------------------------------------
+   3. LAYOUT
+   -------------------------------------------------------------------------- */
+.wrap {
+  width: 100%;
+  max-width: var(--wide);
+  margin-inline: auto;
+  padding-inline: clamp(1.15rem, 0.7rem + 2.2vw, 2.5rem);
+}
+
+.prose { max-width: var(--measure); }
+
+/* Η ενότητα εισαγωγής δεν έχει τίτλο, οπότε η πρώτη παράγραφος κάνει τη
+   δουλειά της κεφαλίδας — με μέγεθος και χρώμα, όχι με αλλαγή γραμματοσειράς. */
+.prose--intro p:first-child {
+  font-size: var(--step-1);
+  line-height: 1.5;
+  color: var(--olive-deep);
+}
+
+.section { padding-block: var(--section); }
+
+.section--tinted {
+  background-color: var(--paper-deep);
+  border-block: 1px solid var(--line-soft);
+}
+
+/* Μία και μόνη σκούρη ζώνη σε όλο το site. Δίνει στη σελίδα ένα σημείο
+   στήριξης και επαναλαμβάνει το πράσινο περίγραμμα της ετικέτας — χωρίς να
+   χρειάζεται background φωτογραφία, που θα κόστιζε στο πρώτο load. */
+.section--dark {
+  background-color: var(--olive-deep);
+  color: var(--paper);
+}
+.section--dark h2 { color: var(--paper); }
+/* .statement p ορίζεται πιο κάτω με ίδια specificity και θα κέρδιζε,
+   αφήνοντας σκούρο καφέ κείμενο πάνω σε σκούρο πράσινο. */
+.section--dark p,
+.section--dark .statement p { color: rgba(245, 238, 226, 0.88); }
+.section--dark .flourish { color: var(--coral-soft); }
+
+.section__head { margin-bottom: clamp(1.75rem, 1.2rem + 2vw, 3rem); }
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: var(--step--1);
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--coral);
+  margin: 0 0 0.85rem;
+}
+
+.section__title { font-size: var(--step-2); }
+
+.lead {
+  font-size: var(--step-1);
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+/* --------------------------------------------------------------------------
+   4. ΔΙΑΚΟΣΜΗΤΙΚΑ ΤΗΣ ΕΤΙΚΕΤΑΣ
+   -------------------------------------------------------------------------- */
+
+/* Η διάστικτη γραμμή που χωρίζει τα πεδία της ετικέτας */
+.dotted-rule {
+  border: 0;
+  height: 0;
+  border-top: 2px dotted var(--line);
+  margin: 0;
+}
+
+/* Διάστικτη γραμμή με το τρίφυλλο flourish στο κέντρο */
+.rule-flourish {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  color: var(--coral);
+  margin-block: clamp(2rem, 1.5rem + 2vw, 3.5rem);
+}
+.rule-flourish::before,
+.rule-flourish::after {
+  content: "";
+  flex: 1;
+  border-top: 2px dotted var(--line);
+}
+.flourish { width: 26px; height: 17px; flex: none; fill: currentColor; }
+
+/* Το πλαίσιο διπλής γραμμής της ετικέτας */
+.framed {
+  border: 1px solid var(--olive);
+  border-radius: var(--radius);
+  padding: clamp(1.5rem, 1rem + 2.5vw, 3rem);
+  position: relative;
+  background: var(--paper-card);
+}
+.framed::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid var(--line);
+  border-radius: 1px;
+  pointer-events: none;
+}
+
+/* Η ροζ πινελιά κάτω από το όνομα ποικιλίας */
+.brushed {
+  display: inline;
+  background-color: var(--coral-soft);
+  /* Στην ετικέτα η πινελιά περνάει πίσω από ΟΛΟ το κείμενο, τόνοι και
+     κεφαλαία μέσα. Το κάθετο padding κρατάει το «Ά» και το «ΐ» μέσα στο πλαίσιο. */
+  padding: 0.14em 0.32em 0.16em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* Η σφραγίδα «ΑΠΟ ΦΡΟΥΤΑ ΤΗΣ ΟΡΕΙΝΗΣ ΑΧΑΪΑΣ» */
+.seal { width: clamp(96px, 14vw, 132px); height: auto; color: var(--olive); }
+.seal--footer { width: 84px; }
+
+/* Κλαδί αχλαδιάς — διακοσμητικό, κρύβεται σε μικρές οθόνες */
+.branch {
+  color: var(--olive);
+  opacity: 0.5;
+  width: 100%;
+  height: auto;
+}
+
+/* --------------------------------------------------------------------------
+   5. HEADER / NAV
+   -------------------------------------------------------------------------- */
+.site-header {
+  border-bottom: 1px solid var(--line-soft);
+  background: rgba(245, 238, 226, 0.9);
+}
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 4.25rem;
+  flex-wrap: wrap;
+}
+
+/* Wordmark — το λογότυπο της ετικέτας (brush script), αποσπασμένο σε PNG
+   με διαφάνεια. Ένα και μόνο αρχείο για header / hero / footer: ένα request,
+   μία εγγραφή στην cache, τρία μεγέθη μέσω CSS.
+   Η γραμματοσειρά της ετικέτας δεν υπάρχει ως webfont με ελληνικά — γι' αυτό
+   εικόνα και όχι κείμενο. Το όνομα δίνεται στο alt. */
+.wordmark { display: inline-block; line-height: 0; }
+.wordmark img { display: block; width: 100%; height: auto; }
+.site-header .wordmark { width: clamp(112px, 24vw, 152px); }
+.site-header .wordmark:hover { opacity: 0.75; }
+
+.site-nav ul {
+  display: flex;
+  gap: clamp(1rem, 0.6rem + 1.6vw, 2rem);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.site-nav a {
+  display: inline-block;
+  /* μεγάλα touch targets για QR-scan από κινητό */
+  padding: 0.85rem 0.25rem;
+  font-size: var(--step--1);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--ink-soft);
+  text-decoration: none;
+}
+.site-nav a:hover { color: var(--coral); }
+.site-nav a[aria-current="page"] {
+  color: var(--olive-deep);
+  box-shadow: inset 0 -2px 0 var(--coral-soft);
+}
+
+/* --------------------------------------------------------------------------
+   6. HERO
+   -------------------------------------------------------------------------- */
+.hero { padding-block: clamp(2.75rem, 2rem + 3.5vw, 5rem) 0; }
+
+.hero__inner { position: relative; }
+
+.hero__brand {
+  line-height: 0;
+  margin: 0 0 1.15rem;
+}
+.hero__brand img {
+  width: clamp(238px, 54vw, 400px);
+  height: auto;
+}
+
+.hero__tagline {
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  color: var(--ink);
+  line-height: 1.25;
+  margin: 0 0 1rem;
+  max-width: 20ch;
+}
+
+.hero__sub {
+  max-width: 46ch;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+.hero__branch {
+  display: none;
+}
+@media (min-width: 62rem) {
+  .hero__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 15rem;
+    gap: 2rem;
+    align-items: start;
+  }
+  .hero__branch { display: block; }
+}
+
+.hero__photo { margin-top: clamp(2rem, 1.5rem + 2vw, 3.25rem); }
+
+/* Σε πλατιά οθόνη το 3:2 δίνει hero ύψους ~750px· πιο πανοραμικό κάδρο.
+   Η ίδια φωτογραφία δουλεύει και στα δύο χάρη στο object-fit: cover. */
+@media (min-width: 62rem) {
+  .hero__photo .photo__frame,
+  .hero__photo img { aspect-ratio: 16 / 7; }
+}
+
+/* --------------------------------------------------------------------------
+   7. PHOTO PLACEHOLDERS
+   ⚑ PHOTO: κάθε .photo είναι ένα σημείο αντικατάστασης.
+   Δες README → «Αντικατάσταση φωτογραφιών».
+   -------------------------------------------------------------------------- */
+.photo { margin: 0; }
+
+.photo__frame {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  text-align: center;
+  padding: 1.25rem;
+  background-color: var(--paper-deep);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent 0 11px,
+    rgba(76, 90, 57, 0.045) 11px 22px
+  );
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--ink-faint);
+  overflow: hidden;
+}
+
+.photo__frame > svg { width: 30px; height: 38px; fill: none; stroke: currentColor; stroke-width: 1.25; opacity: 0.75; }
+
+.photo__label {
+  font-size: var(--step--1);
+  line-height: 1.45;
+  letter-spacing: 0.02em;
+  max-width: 26ch;
+}
+
+/* Πραγματικές φωτογραφίες παίρνουν το ίδιο πλαίσιο */
+.photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+/* Οι ετικέτες φέρουν ήδη τυπωμένο πλαίσιο· ένα δεύτερο γύρω τους μοιάζει λάθος. */
+.photo--label img { border: 0; border-radius: 0; }
+
+.photo figcaption,
+.photo__caption {
+  margin-top: 0.7rem;
+  font-size: var(--step--1);
+  color: var(--ink-faint);
+  font-style: italic;
+}
+
+.ratio-3x2 .photo__frame, .ratio-3x2 img { aspect-ratio: 3 / 2; }
+.ratio-4x3 .photo__frame, .ratio-4x3 img { aspect-ratio: 4 / 3; }
+.ratio-1x1 .photo__frame, .ratio-1x1 img { aspect-ratio: 1 / 1; }
+/* Οι ετικέτες είναι 140x70 mm — ακριβώς 2:1 */
+.ratio-2x1 .photo__frame, .ratio-2x1 img { aspect-ratio: 2 / 1; }
+
+/* --------------------------------------------------------------------------
+   8. ΑΠΟ ΤΟ ΔΕΝΤΡΟ ΣΤΟ ΒΑΖΟ
+   -------------------------------------------------------------------------- */
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: clamp(2rem, 1.4rem + 2.4vw, 2.75rem);
+}
+@media (min-width: 44rem) { .steps { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 68rem) { .steps { grid-template-columns: repeat(4, 1fr); } }
+
+.step__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1rem; height: 2.1rem;
+  border: 1px solid var(--coral);
+  border-radius: 50%;
+  color: var(--coral);
+  font-family: var(--font-display);
+  font-size: var(--step-0);
+  line-height: 1;
+  margin-bottom: 0.9rem;
+}
+.step__title { font-size: var(--step-1); margin-bottom: 0.4rem; }
+.step__text { color: var(--ink-soft); font-size: var(--step--1); line-height: 1.6; }
+.step .photo { margin-bottom: 1.1rem; }
+
+/* --------------------------------------------------------------------------
+   9. ΚΑΡΤΕΣ ΠΡΟΪΟΝΤΩΝ
+   -------------------------------------------------------------------------- */
+.cards {
+  list-style: none;
+  /* Χωρίς όριο, δύο κάρτες σε οθόνη 1280 γίνονται τεράστιες. Με τρεις ή
+     περισσότερες (.cards--3) το πρόβλημα δεν υπάρχει. */
+  max-width: 52rem;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--gap);
+}
+@media (min-width: 40rem) { .cards { grid-template-columns: repeat(2, 1fr); } }
+.cards--3 { max-width: none; }
+@media (min-width: 64rem) { .cards--3 { grid-template-columns: repeat(3, 1fr); } }
+
+.card {
+  background: var(--paper-card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: clamp(1rem, 0.8rem + 1vw, 1.4rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.card__kicker {
+  font-size: var(--step--1);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 0;
+}
+.card__title { font-size: var(--step-1); margin: 0; }
+.card__text { font-size: var(--step--1); color: var(--ink-soft); margin: 0; }
+
+.card__meta {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: var(--step--1);
+  color: var(--ink-faint);
+  padding-top: 0.85rem;
+  border-top: 2px dotted var(--line);
+  margin-top: auto;
+}
+
+/* --------------------------------------------------------------------------
+   10. BADGE ΔΙΑΘΕΣΙΜΟΤΗΤΑΣ
+   -------------------------------------------------------------------------- */
+.badge {
+  display: inline-block;
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  padding: 0.32em 0.75em;
+  border-radius: 100px;
+  border: 1px solid currentColor;
+  line-height: 1.35;
+}
+.badge--production { color: var(--olive); background: rgba(76, 90, 57, 0.09); }
+.badge--limited    { color: var(--coral); background: rgba(185, 106, 87, 0.1); }
+.badge--expected   { color: var(--ink-faint); background: transparent; }
+.badge--finished   { color: var(--ink-faint); background: transparent; opacity: 0.8; }
+
+/* --------------------------------------------------------------------------
+   11. ΣΥΝΔΕΣΜΟΣ-ΔΡΑΣΗΣ (διακριτικός, όχι κουμπί e-shop)
+   -------------------------------------------------------------------------- */
+.textlink {
+  display: inline-block;
+  margin-top: 1.75rem;
+  padding: 0.75rem 0;   /* touch target */
+  font-size: var(--step-1);
+  color: var(--olive-deep);
+  text-decoration: none;
+  border-bottom: 1px solid var(--coral-soft);
+}
+.textlink:hover { color: var(--coral); border-bottom-color: var(--coral); }
+.textlink::after { content: " →"; }
+
+/* --------------------------------------------------------------------------
+   12. ΠΕΡΙΟΡΙΣΜΕΝΗ ΠΑΡΑΓΩΓΗ / ΣΗΜΕΙΩΣΕΙΣ
+   -------------------------------------------------------------------------- */
+.statement {
+  max-width: 40rem;
+  margin-inline: auto;
+  text-align: center;
+}
+.statement > .flourish { margin: 0 auto 1.25rem; display: block; width: 30px; height: 20px; }
+.statement__title { font-size: var(--step-2); margin-bottom: 1rem; }
+.statement p { font-size: var(--step-1); color: var(--ink-soft); line-height: 1.6; }
+
+.note {
+  display: flex;
+  gap: 0.9rem;
+  align-items: flex-start;
+  max-width: var(--measure);
+  padding: 1.1rem 1.25rem;
+  background: var(--paper-card);
+  border-left: 2px solid var(--coral-soft);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+  font-style: italic;
+}
+.note .flourish { color: var(--coral); margin-top: 0.35rem; }
+
+.distribution {
+  max-width: 44rem;
+  font-size: var(--step-1);
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+/* --------------------------------------------------------------------------
+   12b. ΣΥΣΤΑΤΙΚΑ
+   -------------------------------------------------------------------------- */
+.recipe { text-align: center; }
+
+.recipe__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.55rem 1.3rem;
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  line-height: 1.2;
+  color: var(--olive-deep);
+}
+.recipe__list li { display: flex; align-items: center; gap: 1.3rem; }
+.recipe__list li + li::before {
+  content: "";
+  flex: none;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--coral);
+}
+
+/* Σε στενή οθόνη η οριζόντια σειρά σπάει και η κουκκίδα-διαχωριστικό πέφτει
+   στην αρχή της δεύτερης γραμμής, όπου διαβάζεται σαν bullet. Κάθετη στοίβα
+   με διάστικτες γραμμές — πιο κοντά και στη λογική της ετικέτας. */
+@media (max-width: 32rem) {
+  .recipe__list { flex-direction: column; align-items: stretch; gap: 0; }
+  .recipe__list li { justify-content: center; gap: 0; padding: 0.55rem 0; }
+  .recipe__list li + li { border-top: 2px dotted var(--line); }
+  .recipe__list li + li::before { display: none; }
+}
+
+.recipe__strong {
+  margin: 1.2rem 0 0;
+  font-family: var(--font-body);
+  font-size: var(--step--1);
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--coral);
+}
+
+/* --------------------------------------------------------------------------
+   12c. ΓΑΣΤΡΟΝΟΜΙΚΕΣ ΠΡΟΤΑΣΕΙΣ
+   -------------------------------------------------------------------------- */
+.pairings {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--gap);
+}
+@media (min-width: 52rem) { .pairings { grid-template-columns: repeat(2, 1fr); } }
+
+.pairing {
+  background: var(--paper-card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: clamp(1.2rem, 1rem + 1.2vw, 1.75rem);
+}
+.pairing__title { font-size: var(--step-1); margin: 0.35rem 0 1.25rem; }
+.pairing dl { margin: 0; }
+.pairing dt {
+  font-size: var(--step--1);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--coral);
+  margin-bottom: 0.3rem;
+}
+.pairing dd {
+  margin: 0 0 1.15rem;
+  padding-bottom: 1.15rem;
+  border-bottom: 2px dotted var(--line);
+  color: var(--ink-soft);
+  font-size: var(--step--1);
+  line-height: 1.75;
+}
+.pairing dd:last-of-type { margin-bottom: 0; padding-bottom: 0; border-bottom: 0; }
+
+/* --------------------------------------------------------------------------
+   12d. ΠΡΟΕΙΔΟΠΟΙΗΣΗ ΑΣΦΑΛΕΙΑΣ
+   Πιο έντονη από το .note: αφορά ασφάλεια τροφίμου, όχι πληροφορία.
+   -------------------------------------------------------------------------- */
+.warning {
+  display: flex;
+  gap: 0.9rem;
+  align-items: flex-start;
+  max-width: var(--measure);
+  margin: 1.85rem 0 0;
+  padding: 1.15rem 1.3rem;
+  background: rgba(185, 106, 87, 0.09);
+  border: 1px solid var(--coral);
+  border-radius: var(--radius);
+  color: var(--ink);
+  line-height: 1.6;
+}
+.warning svg {
+  flex: none;
+  width: 22px; height: 22px;
+  color: var(--coral);
+  margin-top: 0.15em;
+}
+
+/* --------------------------------------------------------------------------
+   13. ΣΕΛΙΔΑ ΕΠΟΧΩΝ
+   -------------------------------------------------------------------------- */
+.page-head { padding-block: clamp(2.5rem, 1.8rem + 3vw, 4.5rem) 0; }
+.page-head h1 { font-size: var(--step-3); margin-bottom: 1rem; max-width: 18ch; }
+
+.season { padding-block: clamp(2.25rem, 1.6rem + 2.6vw, 3.5rem); }
+.season + .season { border-top: 2px dotted var(--line); }
+
+.season__grid { display: grid; gap: var(--gap); align-items: start; }
+@media (min-width: 48rem) {
+  .season__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: clamp(1.75rem, 1rem + 3vw, 3.25rem); }
+}
+
+.season__title { font-size: var(--step-2); margin-bottom: 0.35rem; }
+.season__months {
+  font-size: var(--step--1);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 0 0 1.1rem;
+}
+
+.chip-label {
+  font-size: var(--step--1);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 1.4rem 0 0.6rem;
+}
+.fruits { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.fruits li {
+  font-size: var(--step--1);
+  padding: 0.3em 0.8em;
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  background: var(--paper-card);
+  color: var(--ink-soft);
+}
+
+/* Τι παρασκεύασμα μπορεί να βγει από τους καρπούς της εποχής — ξεχωρίζει
+   από τα φρούτα με το κοραλί, γιατί είναι ενδεχόμενο και όχι δεδομένο. */
+.fruits--preps li {
+  border-color: var(--coral-soft);
+  border-style: dashed;
+  background: transparent;
+  color: var(--coral);
+}
+
+/* --------------------------------------------------------------------------
+   14. FOOTER
+   -------------------------------------------------------------------------- */
+.site-footer {
+  border-top: 1px solid var(--line-soft);
+  background: var(--paper-deep);
+  padding-block: clamp(2.5rem, 2rem + 2vw, 4rem);
+  text-align: center;
+}
+.site-footer__brand { width: 156px; margin: 0 auto 0.85rem; line-height: 0; }
+.site-footer__brand img { width: 100%; height: auto; }
+.site-footer__line {
+  font-size: var(--step--1);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 0 0 1.5rem;
+}
+.site-footer nav ul {
+  list-style: none; margin: 0 0 1.5rem; padding: 0;
+  display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap;
+}
+.site-footer nav a {
+  display: inline-block; padding: 0.7rem 0.35rem;
+  font-size: var(--step--1); letter-spacing: 0.09em; text-transform: uppercase;
+  color: var(--ink-soft); text-decoration: none;
+}
+.site-footer nav a:hover { color: var(--coral); }
+.site-footer__motto {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: var(--step-0);
+  color: var(--ink-soft);
+  margin: 1.25rem 0 0;
+}
+.site-footer__legal { font-size: 0.78rem; color: var(--ink-faint); margin: 1.25rem 0 0; }

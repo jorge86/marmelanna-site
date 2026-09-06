@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# ⚑ DOMAIN
+Sitemap: https://marmelanna.netlify.app/sitemap.xml

@@ -1,0 +1,31 @@
+# Το site είναι στατικό — δεν υπάρχει build step.
+# Αυτό το αρχείο δεν είναι απαραίτητο για να δουλέψει το deploy·
+# απλώς γλιτώνει τη χειροκίνητη ρύθμιση στο dashboard και προσθέτει caching.
+
+[build]
+  publish = "."
+  command = ""
+
+# Οι σελίδες πρέπει να είναι πάντα φρέσκες (αλλάζουν τα badges εποχής).
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Στατικά assets — μακρύ cache.
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Οι γραμματοσειρές δεν αλλάζουν ποτέ — μακρύ cache.
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
