@@ -94,7 +94,19 @@
   --font-display: "EB Garamond", "Iowan Old Style", Georgia, "Times New Roman", serif;
   --font-body:    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
+  /* Ρυθμός: μία τιμή ανά ρόλο κειμένου, όχι ανά component.
+     Χωρίς αυτό, το ίδιο μέγεθος αποκτά τέσσερα διαφορετικά line-height
+     και τα micro-labels τέσσερα διαφορετικά tracking. */
+  --track-label:   0.12em;
+  --track-heading: 0.005em;
+  --lh-heading:  1.15;
+  --lh-lead:     1.55;
+  --lh-body:     1.65;
+  --lh-small:    1.6;
+  --lh-label:    1.4;
+
   /* Κλίμακα — fluid, mobile-first */
+  --step--2: clamp(0.72rem, 0.70rem + 0.1vw, 0.78rem);
   --step--1: clamp(0.82rem, 0.79rem + 0.15vw, 0.9rem);
   --step-0:  clamp(1rem, 0.96rem + 0.2vw, 1.09rem);
   --step-1:  clamp(1.18rem, 1.1rem + 0.4vw, 1.4rem);
@@ -137,7 +149,7 @@ body {
   color: var(--ink);
   font-family: var(--font-body);
   font-size: var(--step-0);
-  line-height: 1.65;
+  line-height: var(--lh-body);
   font-synthesis-weight: none;
   -webkit-font-smoothing: antialiased;
 }
@@ -146,9 +158,9 @@ h1, h2, h3, h4 {
   font-family: var(--font-display);
   font-weight: 500;
   color: var(--olive-deep);
-  line-height: 1.15;
+  line-height: var(--lh-heading);
   margin: 0;
-  letter-spacing: 0.005em;
+  letter-spacing: var(--track-heading);
 }
 
 p { margin: 0 0 1em; }
@@ -195,7 +207,7 @@ img { max-width: 100%; height: auto; display: block; }
    δουλειά της κεφαλίδας — με μέγεθος και χρώμα, όχι με αλλαγή γραμματοσειράς. */
 .prose--intro p:first-child {
   font-size: var(--step-1);
-  line-height: 1.5;
+  line-height: var(--lh-lead);
   color: var(--olive-deep);
 }
 
@@ -223,11 +235,6 @@ img { max-width: 100%; height: auto; display: block; }
 .section__head { margin-bottom: clamp(1.75rem, 1.2rem + 2vw, 3rem); }
 
 .eyebrow {
-  font-family: var(--font-body);
-  font-size: var(--step--1);
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
   color: var(--coral);
   margin: 0 0 0.85rem;
 }
@@ -237,7 +244,34 @@ img { max-width: 100%; height: auto; display: block; }
 .lead {
   font-size: var(--step-1);
   color: var(--ink-soft);
-  line-height: 1.55;
+  line-height: var(--lh-lead);
+}
+
+/* --------------------------------------------------------------------------
+   3b. MICRO-LABELS
+   Ένας ρόλος, ένα στυλ. Όλα τα κεφαλαία μικρά labels της σελίδας — eyebrows,
+   kickers, ετικέτες πεδίων, μήνες, nav, badges — μοιράζονται μέγεθος, βάρος,
+   tracking και line-height. Αλλάζει ΜΟΝΟ το χρώμα, με κανόνα:
+     coral      → σε επίπεδο ενότητας (eyebrow, εμφατική δήλωση)
+     ink-faint  → μέσα σε component (kicker, ετικέτα πεδίου, μεταδεδομένα)
+   Πριν από αυτό υπήρχαν τέσσερα tracking, δύο βάρη και τρία χρώματα.
+   -------------------------------------------------------------------------- */
+.eyebrow,
+.site-nav a,
+.card__kicker,
+.badge,
+.chip-label,
+.pairing dt,
+.season__months,
+.site-footer__line,
+.site-footer nav a,
+.recipe__strong {
+  font-family: var(--font-body);
+  font-size: var(--step--1);
+  font-weight: 500;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  line-height: var(--lh-label);
 }
 
 /* --------------------------------------------------------------------------
@@ -345,10 +379,6 @@ img { max-width: 100%; height: auto; display: block; }
   display: inline-block;
   /* μεγάλα touch targets για QR-scan από κινητό */
   padding: 0.85rem 0.25rem;
-  font-size: var(--step--1);
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  font-weight: 500;
   color: var(--ink-soft);
   text-decoration: none;
 }
@@ -376,14 +406,19 @@ img { max-width: 100%; height: auto; display: block; }
 
 .hero__tagline {
   font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: var(--track-heading);
   font-size: var(--step-2);
-  color: var(--ink);
-  line-height: 1.25;
+  color: var(--olive-deep);
+  line-height: var(--lh-heading);
   margin: 0 0 1rem;
   max-width: 20ch;
 }
 
 .hero__sub {
+  /* Ίδιος ρόλος με τα .lead των ενοτήτων — ίδιο μέγεθος. */
+  font-size: var(--step-1);
+  line-height: var(--lh-lead);
   max-width: 46ch;
   color: var(--ink-soft);
   margin: 0;
@@ -443,8 +478,7 @@ img { max-width: 100%; height: auto; display: block; }
 
 .photo__label {
   font-size: var(--step--1);
-  line-height: 1.45;
-  letter-spacing: 0.02em;
+  line-height: var(--lh-small);
   max-width: 26ch;
 }
 
@@ -501,7 +535,7 @@ img { max-width: 100%; height: auto; display: block; }
   margin-bottom: 0.9rem;
 }
 .step__title { font-size: var(--step-1); margin-bottom: 0.4rem; }
-.step__text { color: var(--ink-soft); font-size: var(--step--1); line-height: 1.6; }
+.step__text { color: var(--ink-soft); font-size: var(--step--1); line-height: var(--lh-small); }
 .step .photo { margin-bottom: 1.1rem; }
 
 /* --------------------------------------------------------------------------
@@ -532,14 +566,11 @@ img { max-width: 100%; height: auto; display: block; }
 }
 
 .card__kicker {
-  font-size: var(--step--1);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
   color: var(--ink-faint);
   margin: 0;
 }
 .card__title { font-size: var(--step-1); margin: 0; }
-.card__text { font-size: var(--step--1); color: var(--ink-soft); margin: 0; }
+.card__text { font-size: var(--step--1); line-height: var(--lh-small); color: var(--ink-soft); margin: 0; }
 
 .card__meta {
   margin: 0;
@@ -548,6 +579,7 @@ img { max-width: 100%; height: auto; display: block; }
   align-items: center;
   gap: 0.6rem;
   font-size: var(--step--1);
+  line-height: var(--lh-small);
   color: var(--ink-faint);
   padding-top: 0.85rem;
   border-top: 2px dotted var(--line);
@@ -559,14 +591,12 @@ img { max-width: 100%; height: auto; display: block; }
    -------------------------------------------------------------------------- */
 .badge {
   display: inline-block;
-  font-size: 0.74rem;
-  font-weight: 500;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  padding: 0.32em 0.75em;
+  /* Ένα σκαλί κάτω από τα υπόλοιπα labels: το περίγραμμα και το γέμισμα
+     προσθέτουν πλάτος, και οι καταστάσεις είναι μακριές φράσεις. */
+  font-size: var(--step--2);
+  padding: 0.34em 0.8em;
   border-radius: 100px;
   border: 1px solid currentColor;
-  line-height: 1.35;
 }
 .badge--production { color: var(--olive); background: rgba(76, 90, 57, 0.09); }
 .badge--limited    { color: var(--coral); background: rgba(185, 106, 87, 0.1); }
@@ -580,7 +610,7 @@ img { max-width: 100%; height: auto; display: block; }
   display: inline-block;
   margin-top: 1.75rem;
   padding: 0.75rem 0;   /* touch target */
-  font-size: var(--step-1);
+  font-size: var(--step-0);
   color: var(--olive-deep);
   text-decoration: none;
   border-bottom: 1px solid var(--coral-soft);
@@ -598,7 +628,7 @@ img { max-width: 100%; height: auto; display: block; }
 }
 .statement > .flourish { margin: 0 auto 1.25rem; display: block; width: 30px; height: 20px; }
 .statement__title { font-size: var(--step-2); margin-bottom: 1rem; }
-.statement p { font-size: var(--step-1); color: var(--ink-soft); line-height: 1.6; }
+.statement p { font-size: var(--step-1); color: var(--ink-soft); line-height: var(--lh-lead); }
 
 .note {
   display: flex;
@@ -609,7 +639,8 @@ img { max-width: 100%; height: auto; display: block; }
   background: var(--paper-card);
   border-left: 2px solid var(--coral-soft);
   border-radius: 0 var(--radius) var(--radius) 0;
-  font-size: var(--step--1);
+  font-size: var(--step-0);
+  line-height: var(--lh-body);
   color: var(--ink-soft);
   font-style: italic;
 }
@@ -619,7 +650,7 @@ img { max-width: 100%; height: auto; display: block; }
   max-width: 44rem;
   font-size: var(--step-1);
   color: var(--ink-soft);
-  line-height: 1.55;
+  line-height: var(--lh-lead);
 }
 
 /* --------------------------------------------------------------------------
@@ -637,8 +668,10 @@ img { max-width: 100%; height: auto; display: block; }
   align-items: center;
   gap: 0.55rem 1.3rem;
   font-family: var(--font-display);
-  font-size: var(--step-2);
-  line-height: 1.2;
+  font-weight: 500;
+  letter-spacing: var(--track-heading);
+  font-size: var(--step-1);
+  line-height: var(--lh-heading);
   color: var(--olive-deep);
 }
 .recipe__list li { display: flex; align-items: center; gap: 1.3rem; }
@@ -662,11 +695,6 @@ img { max-width: 100%; height: auto; display: block; }
 
 .recipe__strong {
   margin: 1.2rem 0 0;
-  font-family: var(--font-body);
-  font-size: var(--step--1);
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
   color: var(--coral);
 }
 
@@ -691,11 +719,7 @@ img { max-width: 100%; height: auto; display: block; }
 .pairing__title { font-size: var(--step-1); margin: 0.35rem 0 1.25rem; }
 .pairing dl { margin: 0; }
 .pairing dt {
-  font-size: var(--step--1);
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--coral);
+  color: var(--ink-faint);
   margin-bottom: 0.3rem;
 }
 .pairing dd {
@@ -704,7 +728,7 @@ img { max-width: 100%; height: auto; display: block; }
   border-bottom: 2px dotted var(--line);
   color: var(--ink-soft);
   font-size: var(--step--1);
-  line-height: 1.75;
+  line-height: var(--lh-small);
 }
 .pairing dd:last-of-type { margin-bottom: 0; padding-bottom: 0; border-bottom: 0; }
 
@@ -723,8 +747,11 @@ img { max-width: 100%; height: auto; display: block; }
   border: 1px solid var(--coral);
   border-radius: var(--radius);
   color: var(--ink);
-  line-height: 1.6;
+  line-height: var(--lh-body);
 }
+/* Το Inter είναι self-hosted μόνο σε 400-500· το <strong> ζητούσε 700
+   και έπεφτε σε συνθετικό bold. */
+.warning strong { font-weight: 500; }
 .warning svg {
   flex: none;
   width: 22px; height: 22px;
@@ -748,23 +775,18 @@ img { max-width: 100%; height: auto; display: block; }
 
 .season__title { font-size: var(--step-2); margin-bottom: 0.35rem; }
 .season__months {
-  font-size: var(--step--1);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
   color: var(--ink-faint);
   margin: 0 0 1.1rem;
 }
 
 .chip-label {
-  font-size: var(--step--1);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
   color: var(--ink-faint);
   margin: 1.4rem 0 0.6rem;
 }
 .fruits { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .fruits li {
   font-size: var(--step--1);
+  line-height: var(--lh-small);
   padding: 0.3em 0.8em;
   border: 1px solid var(--line);
   border-radius: 100px;
@@ -793,9 +815,6 @@ img { max-width: 100%; height: auto; display: block; }
 .site-footer__brand { width: 156px; margin: 0 auto 0.85rem; line-height: 0; }
 .site-footer__brand img { width: 100%; height: auto; }
 .site-footer__line {
-  font-size: var(--step--1);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
   color: var(--ink-faint);
   margin: 0 0 1.5rem;
 }
@@ -805,7 +824,6 @@ img { max-width: 100%; height: auto; display: block; }
 }
 .site-footer nav a {
   display: inline-block; padding: 0.7rem 0.35rem;
-  font-size: var(--step--1); letter-spacing: 0.09em; text-transform: uppercase;
   color: var(--ink-soft); text-decoration: none;
 }
 .site-footer nav a:hover { color: var(--coral); }
@@ -816,4 +834,4 @@ img { max-width: 100%; height: auto; display: block; }
   color: var(--ink-soft);
   margin: 1.25rem 0 0;
 }
-.site-footer__legal { font-size: 0.78rem; color: var(--ink-faint); margin: 1.25rem 0 0; }
+.site-footer__legal { font-size: var(--step--1); line-height: var(--lh-small); color: var(--ink-faint); margin: 1.25rem 0 0; }
