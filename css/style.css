@@ -675,6 +675,16 @@ img { max-width: 100%; height: auto; display: block; }
   color: var(--olive-deep);
 }
 .recipe__list li { display: flex; align-items: center; gap: 1.3rem; }
+
+/* Διευκρίνιση δίπλα σε συστατικό: μένει serif ώστε να μη σπάει η γραμμή
+   τυπογραφικά, αλλά ένα σκαλί πιο κάτω για να κρατάει το όνομα μπροστά. */
+.recipe__hint {
+  /* Δικό του margin, όχι flex gap: στο κινητό το gap της λίστας είναι 0 και
+     το flex layout κόβει το κενό ανάμεσα στο κείμενο και στο span. */
+  margin-left: 0.4em;
+  font-size: var(--step-0);
+  color: var(--ink-faint);
+}
 .recipe__list li + li::before {
   content: "";
   flex: none;
