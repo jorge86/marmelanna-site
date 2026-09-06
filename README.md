@@ -106,10 +106,14 @@ Netlify → Site configuration → Domain management → Add domain.
 grep -rn "⚑" . --include=*.html --include=*.md --include=*.txt --include=*.xml
 ```
 
-### 1. Domain / canonical URL
+### 1. Domain / canonical URL — ΚΛΕΙΔΩΜΕΝΟ
 
-Μέχρι να κλειδώσει το domain, παντού υπάρχει το placeholder
-`https://marmelanna.netlify.app`. Εμφανίζεται σε 4 αρχεία:
+> **Το QR στις τυπωμένες ετικέτες δείχνει ήδη στο `marmelanna.netlify.app`.**
+> Δεν είναι πια placeholder. Αν αλλάξει το domain, κάθε βάζο που κυκλοφορεί
+> οδηγεί σε νεκρό σύνδεσμο — και το QR δεν ξανατυπώνεται. Σε περίπτωση
+> αλλαγής, κράτησε το παλιό domain με redirect προς το νέο.
+
+Το URL εμφανίζεται σε 4 αρχεία:
 
 ```bash
 grep -rln "marmelanna.netlify.app" .
