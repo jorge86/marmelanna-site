@@ -13,19 +13,29 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
 
-# Στατικά assets — μακρύ cache.
-[[headers]]
-  for = "/images/*"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+# ⚠ ΜΑΚΡΥ CACHE ΜΟΝΟ ΣΕ ΑΡΧΕΙΑ ΠΟΥ ΔΕΝ ΑΛΛΑΖΟΥΝ ΟΝΟΜΑ.
+# Το site δεν έχει build step, άρα ούτε fingerprinting στα ονόματα αρχείων.
+# Ένα max-age μιας εβδομάδας στο style.css σήμαινε ότι μετά από κάθε αλλαγή
+# οι επισκέπτες έβλεπαν νέο HTML με παλιό stylesheet, και δεν διορθωνόταν
+# από τον server — ο browser δεν ξαναρωτούσε μέχρι να λήξει.
 
-# Οι γραμματοσειρές δεν αλλάζουν ποτέ — μακρύ cache.
+# Οι γραμματοσειρές είναι το μόνο πραγματικά αμετάβλητο: αν αλλάξουν,
+# αλλάζει και το όνομα του αρχείου.
 [[headers]]
   for = "/fonts/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
+# Οι εικόνες μπορεί να αντικατασταθούν με το ίδιο όνομα (π.χ. νέα ετικέτα).
+# Μία μέρα: καλή cache, και αυτοδιόρθωση μέσα σε 24 ώρες.
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+# Το CSS αλλάζει σε κάθε αλλαγή σχεδίασης. Πάντα revalidate: ένα 304 κοστίζει
+# ~200 bytes, ένα ξεπερασμένο stylesheet κοστίζει σπασμένη σελίδα.
 [[headers]]
   for = "/css/*"
   [headers.values]
-    Cache-Control = "public, max-age=604800"
+    Cache-Control = "public, max-age=0, must-revalidate"
