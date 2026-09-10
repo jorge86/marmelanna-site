@@ -43,3 +43,22 @@
   for = "/css/*"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
+
+# ── /q : διακριτή διεύθυνση για το QR της επόμενης ανατύπωσης ──────────────
+# Rewrite (200), ΟΧΙ redirect. Το Cloudflare Web Analytics είναι JavaScript:
+# τρέχει μόνο όταν φορτώνει σελίδα, και ένα redirect δεν φορτώνει τίποτα —
+# το /q δεν θα μετριόταν ποτέ. Με rewrite η αρχική σερβίρεται στο /q, το
+# beacon τρέχει κανονικά και αναφέρει διαδρομή "/q". Έτσι κάθε scan από τη
+# νέα ανατύπωση ξεχωρίζει από την υπόλοιπη κίνηση.
+# Το ήδη τυπωμένο QR δείχνει στο "/" και συνεχίζει να δουλεύει αμετάβλητο.
+[[redirects]]
+  from = "/q"
+  to = "/index.html"
+  status = 200
+
+# Ίδιο περιεχόμενο σε δύο διευθύνσεις: το canonical δείχνει ήδη στο "/",
+# αλλά το noindex το κάνει ρητό ώστε να μην μπει το /q στα αποτελέσματα.
+[[headers]]
+  for = "/q"
+  [headers.values]
+    X-Robots-Tag = "noindex"
