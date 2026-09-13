@@ -39,14 +39,14 @@ GRADE = dict(warm=1.035, bright=1.02, contrast=1.10, saturation=1.06)
 # source, crop στην πηγή, ratio, πλάτος(η), όνομα, εστίαση(cx,cy,rx,ry), blur, budget
 PHOTOS = [
   ("esperidoeidi.jpg",   (0,0,1800,1350),   3/2, [800,1300], "orchard-{w}.jpg",             None,                    0,  270_000),
-  ("damaskina2.jpg",     None,              4/3, [900],      "step-1-branch.jpg",           (0.42,0.46,0.52,0.55),   9,  150_000),
+  ("vanilies.jpg",       (0,150,1197,1048), 4/3, [900],      "step-1-branch.jpg",           (0.55,0.50,0.55,0.58),   9,  150_000),
   ("sygkomidh 3.png",    (0,560,852,1199),  4/3, [900],      "step-2-harvesting.jpg",       (0.35,0.45,0.55,0.60),   9,  190_000),
   ("damaskina4.jpg",     (45,40,639,486),   4/3, [900],      "step-3-washed.jpg",           (0.48,0.50,0.58,0.58),   8,  150_000),
   ("vazo.jpg",           (0,180,2317,1918), 4/3, [1000],     "step-4-jar.jpg",              (0.32,0.50,0.62,0.62),   5,  150_000),
   ("λεμονι τελικο.png",  None,              3/2, [1000],     "season-spring-lemon.jpg",     (0.63,0.50,0.50,0.55),   8,  150_000),
-  ("κρυσταλλια δεντρο.jpg", None,           3/2, [1000],     "season-summer-pears.jpg",     (0.50,0.48,0.56,0.58),   9,  240_000),
+  ("krystalia.jpg",      (0,371,1197,1169), 3/2, [1000],     "season-summer-pears.jpg",     (0.55,0.52,0.56,0.58),   9,  160_000),
   ("damaskina3.jpg",     None,              3/2, [1000],     "season-autumn-branch.jpg",    (0.46,0.50,0.55,0.58),   9,  150_000),
-  ("lotoi.jpeg",         None,              3/2, [600],      "season-winter-persimmons.jpg",(0.50,0.50,0.58,0.60),   5,  120_000),
+  ("esperidoeidi.jpg",   (0,0,930,620),     3/2, [1000],     "season-winter-oranges.jpg",   (0.42,0.40,0.56,0.60),   7,  200_000),
 ]
 
 # ── βάθος πεδίου ──────────────────────────────────────────────────────────
