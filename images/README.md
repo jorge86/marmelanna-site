@@ -53,13 +53,17 @@ python3 tools/build-photos.py
 |---|---|---|
 | `orchard-800.jpg` / `orchard-1300.jpg` | esperidoeidi | hero, με `srcset` |
 | `step-1-branch.jpg` | damaskina2 | «Το φρούτο» |
-| `step-2-picking.jpg` | sugkomidi2 | «Η συγκομιδή» — κομμένο πάνω από το κάγκελο |
+| `step-2-harvesting.jpg` | sygkomidh 3 | «Η συγκομιδή» |
 | `step-3-washed.jpg` | damaskina4 | «Η μικρή παραγωγή» |
+| `step-4-jar.jpg` | vazo.heic | «Το βάζο» |
 | `season-spring-lemon.jpg` | λεμονι τελικο | Άνοιξη |
-| `season-summer-pears.jpg` | κρυσταλλια δεντρο | Καλοκαίρι |
-| `season-winter-persimmons.jpg` | lotoi | Χειμώνας — **πηγή μόλις 387×516** |
-| `step-4-jar.jpg` | vazo.heic | «Το βάζο» (μετατροπή HEIC με `sips`) |
-| `season-autumn-branch.jpg` | damaskina3 | Φθινόπωρο |
+| `season-summer-pears-vanilies.jpg` | krystalia + vanilies | Καλοκαίρι — **δίπτυχο** |
+| `season-autumn-quinces.jpg` | kudonia2 | Φθινόπωρο |
+| `season-winter-oranges.jpg` | esperidoeidi | Χειμώνας — κοντινό στην πορτοκαλιά του hero, μέχρι να υπάρξει δική του λήψη |
+
+> **Αποκλεισμένες πηγές.** Το `sugkomidi.jpg` και το `sugkomidi2.jpg` εικονίζουν
+> άντρα στη συγκομιδή και δεν πρέπει να εμφανιστούν στο site. Είναι στο
+> `EXCLUDED_SOURCES` του script, που αρνείται να τρέξει αν χρησιμοποιηθούν.
 
 > Το hero έχει **δύο εκδόσεις**. Ο οπωρώνας είναι πολύ πυκνός σε λεπτομέρεια
 > και δεν συμπιέζεται (508 KB στα 1500px). Με `srcset` το κινητό κατεβάζει

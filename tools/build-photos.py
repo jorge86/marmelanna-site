@@ -27,6 +27,13 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC  = ROOT.parent / "Frouta Photos"
 OUT  = ROOT / "images"
 
+# Πηγές που ΔΕΝ πρέπει να εμφανιστούν ποτέ στο site. Το script αρνείται να
+# τρέξει αν κάποια χρησιμοποιηθεί — ρητή απόφαση της ιδιοκτήτριας.
+EXCLUDED_SOURCES = {
+    "sugkomidi.jpg",    # εικονίζεται άντρας στη συγκομιδή
+    "sugkomidi2.jpg",   # εικονίζεται άντρας στη συγκομιδή
+}
+
 # Η εξισορρόπηση αφορά ΧΡΩΜΑ, όχι φωτεινότητα. Ένα κοντινό σε σκούρα
 # δαμάσκηνα είναι νόμιμα πιο σκοτεινό από έναν ηλιόλουστο οπωρώνα· αν τραβήξεις
 # και τη φωτεινότητα προς τον μέσο όρο, καίγονται τα φωτεινά μέρη.
@@ -39,15 +46,26 @@ GRADE = dict(warm=1.035, bright=1.02, contrast=1.10, saturation=1.06)
 # source, crop στην πηγή, ratio, πλάτος(η), όνομα, εστίαση(cx,cy,rx,ry), blur, budget
 PHOTOS = [
   ("esperidoeidi.jpg",   (0,0,1800,1350),   3/2, [800,1300], "orchard-{w}.jpg",             None,                    0,  270_000),
-  ("vanilies.jpg",       (0,150,1197,1048), 4/3, [900],      "step-1-branch.jpg",           (0.55,0.50,0.55,0.58),   9,  150_000),
+  ("damaskina2.jpg",     None,              4/3, [900],      "step-1-branch.jpg",           (0.42,0.46,0.52,0.55),   9,  150_000),
   ("sygkomidh 3.png",    (0,560,852,1199),  4/3, [900],      "step-2-harvesting.jpg",       (0.35,0.45,0.55,0.60),   9,  190_000),
   ("damaskina4.jpg",     (45,40,639,486),   4/3, [900],      "step-3-washed.jpg",           (0.48,0.50,0.58,0.58),   8,  150_000),
   ("vazo.jpg",           (0,180,2317,1918), 4/3, [1000],     "step-4-jar.jpg",              (0.32,0.50,0.62,0.62),   5,  150_000),
   ("λεμονι τελικο.png",  None,              3/2, [1000],     "season-spring-lemon.jpg",     (0.63,0.50,0.50,0.55),   8,  150_000),
-  ("krystalia.jpg",      (0,371,1197,1169), 3/2, [1000],     "season-summer-pears.jpg",     (0.55,0.52,0.56,0.58),   9,  160_000),
-  ("damaskina3.jpg",     None,              3/2, [1000],     "season-autumn-branch.jpg",    (0.46,0.50,0.55,0.58),   9,  150_000),
+  ("kudonia2.jpg",       (0,802,1197,1600), 3/2, [1000],     "season-autumn-quinces.jpg",   (0.38,0.58,0.52,0.56),   9,  170_000),
   ("esperidoeidi.jpg",   (0,0,930,620),     3/2, [1000],     "season-winter-oranges.jpg",   (0.42,0.40,0.56,0.60),   7,  200_000),
 ]
+
+# Κολάζ: πολλές πηγές σε ένα κάδρο, με λεπτά διαχωριστικά στο χρώμα του χαρτιού.
+# Μπαίνει μόνο όπου τα πάνελ έχουν ίδιο ύφος λήψης — ανάμειξη flat-lay με λήψη
+# από τον οπωρώνα δείχνει πρόχειρη.
+# όνομα, ratio, πλάτος, κενό, [(πηγή, κουτί στην πηγή, εστίαση), ...], budget
+COLLAGES = [
+  ("season-summer-pears-vanilies.jpg", 3/2, 1000, 8, [
+      ("krystalia.jpg", (3, 0, 1193, 1600),   (0.52, 0.48, 0.60, 0.55)),
+      ("vanilies.jpg",  (150, 0, 1110, 1290), (0.50, 0.47, 0.58, 0.55)),
+  ], 180_000),
+]
+PAPER = (245, 238, 226)   # --paper του site
 
 # ── βάθος πεδίου ──────────────────────────────────────────────────────────
 def radial_mask(w, h, cx, cy, rx, ry, feather=0.8):
@@ -114,6 +132,11 @@ def main():
                        check=True, capture_output=True)
         print("vazo.heic → vazo.jpg (sips)")
 
+    used = {p[0] for p in PHOTOS} | {pn[0] for c in COLLAGES for pn in c[4]}
+    blocked = used & EXCLUDED_SOURCES
+    if blocked:
+        sys.exit(f"ΣΤΑΜΑΤΗΣΕ: αποκλεισμένες πηγές στη λίστα: {sorted(blocked)}")
+
     # Στάδιο 1-2: κοπή, μέγεθος, βάθος πεδίου
     built = []
     for name, box, ratio, widths, tmpl, focus, blur, budget in PHOTOS:
@@ -124,6 +147,15 @@ def main():
             im = base.resize((w, int(round(w / ratio))), Image.LANCZOS)
             if focus: im = depth_of_field(im, *focus, blur)
             built.append([tmpl.format(w=w) if "{w}" in tmpl else tmpl, im, budget])
+
+    for dst, ratio, w, gut, panels, budget in COLLAGES:
+        h = int(round(w / ratio)); n = len(panels)
+        pw = (w - gut * (n - 1)) // n
+        canvas = Image.new("RGB", (w, h), PAPER)
+        for i, (name, box, focus) in enumerate(panels):
+            im = Image.open(SRC / name).convert("RGB").crop(box).resize((pw, h), Image.LANCZOS)
+            canvas.paste(depth_of_field(im, *focus, 7, vignette=0.07), (i * (pw + gut), 0))
+        built.append([dst, canvas, budget])
 
     # Στάδιο 3: εξισορρόπηση προς τον μέσο όρο του συνόλου, μετά κοινή διόρθωση
     def luma(m): return 0.299*m[0] + 0.587*m[1] + 0.114*m[2]
