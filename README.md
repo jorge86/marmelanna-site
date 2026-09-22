@@ -111,6 +111,30 @@ Dashboard: <https://dash.cloudflare.com> → Web Analytics.
 > το για **τάση**, όχι για απόλυτο αριθμό. Η μόνη ακριβής λύση είναι το
 > Netlify Analytics (server-side, ~$9/μήνα), που δεν έχει δωρεάν εκδοχή.
 
+### Ημερήσια σύνοψη με email
+
+Το `.github/workflows/analytics-digest.yml` τρέχει κάθε πρωί (06:00 UTC),
+ρωτάει το GraphQL API του Cloudflare για τα χθεσινά νούμερα και γράφει σχόλιο
+σε ένα μόνιμο issue με ετικέτα `analytics`. Το GitHub στέλνει το email.
+
+Χρειάζονται δύο repository secrets:
+
+| Secret | Τι είναι |
+|---|---|
+| `CLOUDFLARE_API_TOKEN` | token με δικαίωμα Account → Account Analytics → Read |
+| `CLOUDFLARE_ACCOUNT_ID` | το Account ID, από τη διεύθυνση του dashboard |
+
+Το Account ID είναι secret και όχι σκληρά γραμμένο επειδή **το repo είναι
+δημόσιο**. Το site tag είναι σκληρά γραμμένο στο script, γιατί είναι ήδη
+δημόσιο — εμφανίζεται στο beacon κάθε σελίδας.
+
+Για να σταματήσει: κλείσε το issue ή απενεργοποίησε το workflow στα Actions.
+Για σχόλιο μόνο όταν υπάρχει κίνηση, βάλε `ALWAYS_POST = False` στο script.
+
+> Το GraphQL του Cloudflare επιστρέφει HTTP 200 ακόμα κι όταν η ερώτηση
+> αποτυγχάνει, με τα σφάλματα μέσα στο σώμα. Το script τα ελέγχει ρητά — χωρίς
+> αυτό το workflow θα «πετύχαινε» στέλνοντας μηδενικά κάθε μέρα.
+
 ### Η διεύθυνση /q
 
 Το `netlify.toml` σερβίρει την αρχική και στο `/q`, με **rewrite** (status 200)

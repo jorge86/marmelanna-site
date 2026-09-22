@@ -1,0 +1,21 @@
+name: Ημερήσια σύνοψη επισκεψιμότητας
+
+on:
+  schedule:
+    - cron: "0 6 * * *"   # 06:00 UTC ≈ 09:00 ώρα Ελλάδας το καλοκαίρι
+  workflow_dispatch:       # για χειροκίνητη δοκιμή από την καρτέλα Actions
+
+permissions:
+  issues: write            # μόνο ό,τι χρειάζεται: γράφει σχόλιο σε issue
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Σύνοψη από το Cloudflare
+        env:
+          CF_API_TOKEN:  ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          GITHUB_TOKEN:  ${{ secrets.GITHUB_TOKEN }}
+        run: python3 tools/analytics-digest.py
