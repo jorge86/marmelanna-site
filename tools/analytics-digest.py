@@ -23,14 +23,14 @@ ISSUE_LABEL = "analytics"
 ALWAYS_POST = True
 
 GQL = """
-query ($account: String!, $site: String!, $start: Time!, $weekStart: Time!, $end: Time!) {
+query ($account: String!, $site: String!, $start: Time!, $recentStart: Time!, $end: Time!, $now: Time!) {
   viewer {
     accounts(filter: {accountTag: $account}) {
       totals: rumPageloadEventsAdaptiveGroups(
         filter: {siteTag: $site, datetime_geq: $start, datetime_lt: $end}, limit: 1
       ) { count sum { visits } }
-      week: rumPageloadEventsAdaptiveGroups(
-        filter: {siteTag: $site, datetime_geq: $weekStart, datetime_lt: $end}, limit: 1
+      recent: rumPageloadEventsAdaptiveGroups(
+        filter: {siteTag: $site, datetime_geq: $recentStart, datetime_lt: $now}, limit: 1
       ) { count sum { visits } }
       paths: rumPageloadEventsAdaptiveGroups(
         filter: {siteTag: $site, datetime_geq: $start, datetime_lt: $end},
@@ -71,13 +71,18 @@ def main():
 
     day   = (datetime.now(timezone.utc) - timedelta(days=1)).date()
     start = f"{day}T00:00:00Z"
-    week  = f"{day - timedelta(days=6)}T00:00:00Z"
+    # 30 ημέρες που φτάνουν μέχρι ΤΩΡΑ, όχι μέχρι την αρχή του σήμερα.
+    # Ένα παράθυρο που σταματά χθες δεν μπορεί να επιβεβαιώσει ότι το φίλτρο
+    # δουλεύει, γιατί δεν περιλαμβάνει τη σημερινή γνωστή κίνηση.
+    recent = f"{day - timedelta(days=29)}T00:00:00Z"
+    now    = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     end   = f"{day + timedelta(days=1)}T00:00:00Z"
 
     res = post("https://api.cloudflare.com/client/v4/graphql",
                {"query": GQL,
                 "variables": {"account": account, "site": SITE_TAG,
-                              "start": start, "weekStart": week, "end": end}},
+                              "start": start, "recentStart": recent,
+                              "end": end, "now": now}},
                cf_token)
 
     # Το GraphQL του Cloudflare επιστρέφει 200 ακόμα κι όταν αποτυγχάνει.
@@ -98,7 +103,7 @@ def main():
     totals  = a["totals"][0] if a.get("totals") else {"count": 0, "sum": {"visits": 0}}
     views   = totals.get("count", 0)
     visits  = (totals.get("sum") or {}).get("visits", 0)
-    wk      = a["week"][0] if a.get("week") else {"count": 0, "sum": {"visits": 0}}
+    wk      = a["recent"][0] if a.get("recent") else {"count": 0, "sum": {"visits": 0}}
     wk_views  = wk.get("count", 0)
     wk_visits = (wk.get("sum") or {}).get("visits", 0)
 
@@ -108,7 +113,7 @@ def main():
 
     lines = [f"### {day.strftime('%d/%m/%Y')}", "",
              f"**{visits}** επισκέψεις · **{views}** προβολές σελίδων",
-             f"<sub>Επτά ημέρες: {wk_visits} επισκέψεις · {wk_views} προβολές</sub>", ""]
+             f"<sub>Τελευταίες 30 ημέρες: {wk_visits} επισκέψεις · {wk_views} προβολές</sub>", ""]
 
     paths = [p for p in a.get("paths", []) if p["count"]]
     if paths:
