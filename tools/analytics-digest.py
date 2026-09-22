@@ -23,11 +23,14 @@ ISSUE_LABEL = "analytics"
 ALWAYS_POST = True
 
 GQL = """
-query ($account: String!, $site: String!, $start: Time!, $end: Time!) {
+query ($account: String!, $site: String!, $start: Time!, $weekStart: Time!, $end: Time!) {
   viewer {
     accounts(filter: {accountTag: $account}) {
       totals: rumPageloadEventsAdaptiveGroups(
         filter: {siteTag: $site, datetime_geq: $start, datetime_lt: $end}, limit: 1
+      ) { count sum { visits } }
+      week: rumPageloadEventsAdaptiveGroups(
+        filter: {siteTag: $site, datetime_geq: $weekStart, datetime_lt: $end}, limit: 1
       ) { count sum { visits } }
       paths: rumPageloadEventsAdaptiveGroups(
         filter: {siteTag: $site, datetime_geq: $start, datetime_lt: $end},
@@ -68,12 +71,13 @@ def main():
 
     day   = (datetime.now(timezone.utc) - timedelta(days=1)).date()
     start = f"{day}T00:00:00Z"
+    week  = f"{day - timedelta(days=6)}T00:00:00Z"
     end   = f"{day + timedelta(days=1)}T00:00:00Z"
 
     res = post("https://api.cloudflare.com/client/v4/graphql",
                {"query": GQL,
                 "variables": {"account": account, "site": SITE_TAG,
-                              "start": start, "end": end}},
+                              "start": start, "weekStart": week, "end": end}},
                cf_token)
 
     # Το GraphQL του Cloudflare επιστρέφει 200 ακόμα κι όταν αποτυγχάνει.
@@ -94,13 +98,17 @@ def main():
     totals  = a["totals"][0] if a.get("totals") else {"count": 0, "sum": {"visits": 0}}
     views   = totals.get("count", 0)
     visits  = (totals.get("sum") or {}).get("visits", 0)
+    wk      = a["week"][0] if a.get("week") else {"count": 0, "sum": {"visits": 0}}
+    wk_views  = wk.get("count", 0)
+    wk_visits = (wk.get("sum") or {}).get("visits", 0)
 
     if not ALWAYS_POST and views == 0 and day.weekday() != 0:
         print(f"{day}: μηδέν επισκέψεις, δεν στέλνω σχόλιο (ALWAYS_POST=False)")
         return 0
 
     lines = [f"### {day.strftime('%d/%m/%Y')}", "",
-             f"**{visits}** επισκέψεις · **{views}** προβολές σελίδων", ""]
+             f"**{visits}** επισκέψεις · **{views}** προβολές σελίδων",
+             f"<sub>Επτά ημέρες: {wk_visits} επισκέψεις · {wk_views} προβολές</sub>", ""]
 
     paths = [p for p in a.get("paths", []) if p["count"]]
     if paths:
