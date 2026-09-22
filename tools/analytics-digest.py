@@ -15,7 +15,11 @@
 import json, os, sys, urllib.request, urllib.error
 from datetime import datetime, timedelta, timezone
 
-SITE_TAG    = "cf34922e2ffb4b639aced62b6f5599d9"   # ίδιο με το beacon· δημόσιο
+# Το site tag ΔΕΝ είναι το token του beacon — φαίνονται ίδιου τύπου αλλά είναι
+# διαφορετικά αναγνωριστικά. Η πρώτη εκδοχή το υπέθετε και επέστρεφε μηδενικά
+# για πάντα, ενώ το dashboard έδειχνε κίνηση. Το βρίσκουμε από το API.
+SITE_HOST   = "marmelanna.netlify.app"
+BEACON_TOKEN = "cf34922e2ffb4b639aced62b6f5599d9"   # μόνο ως έσχατη εφεδρεία
 ISSUE_TITLE = "Επισκεψιμότητα — ημερήσια σύνοψη"
 ISSUE_LABEL = "analytics"
 # True = σχόλιο κάθε μέρα, ακόμα και με μηδέν επισκέψεις.
@@ -55,19 +59,53 @@ def post(url, payload, token, method="POST"):
     with urllib.request.urlopen(req, timeout=30) as r:
         return json.loads(r.read().decode() or "{}")
 
-def get(url, token):
-    req = urllib.request.Request(url, headers={
-        "Authorization": f"Bearer {token}",
-        "Accept": "application/vnd.github+json",
-        "User-Agent": "marmelanna-analytics"})
+def get(url, token, github=True):
+    h = {"Authorization": f"Bearer {token}", "User-Agent": "marmelanna-analytics"}
+    if github:
+        h["Accept"] = "application/vnd.github+json"
+    req = urllib.request.Request(url, headers=h)
     with urllib.request.urlopen(req, timeout=30) as r:
         return json.loads(r.read().decode())
+
+def discover_site_tag(account, token):
+    """Βρίσκει το site tag του Web Analytics από το REST API.
+
+    Επιστρέφει (tag, σημείωση_διάγνωσης). Αν αποτύχει, γυρνάει το token του
+    beacon ως εφεδρεία μαζί με εξήγηση, ώστε το πρόβλημα να φαίνεται στο
+    σχόλιο αντί να καταλήγει σιωπηλά σε μηδενικά."""
+    url = f"https://api.cloudflare.com/client/v4/accounts/{account}/rum/site_info/list"
+    try:
+        res = get(url, token, github=False)
+    except urllib.error.HTTPError as e:
+        body = e.read().decode()[:300]
+        return BEACON_TOKEN, (f"Δεν μπόρεσα να διαβάσω τη λίστα sites "
+                              f"(HTTP {e.code}). Το token ίσως χρειάζεται και "
+                              f"δικαίωμα Account → Web Analytics → Read. {body}")
+    sites = res.get("result") or []
+    if not sites:
+        return BEACON_TOKEN, "Το API δεν επέστρεψε κανένα site Web Analytics."
+
+    def host_of(s):
+        r = s.get("ruleset") or {}
+        return (r.get("zone_name") or "") or " ".join(
+            x.get("host", "") for x in (s.get("rules") or []))
+
+    for s_ in sites:
+        if SITE_HOST in host_of(s_):
+            return s_["site_tag"], None
+    if len(sites) == 1:
+        return sites[0]["site_tag"], None
+    listing = ", ".join(f"{host_of(x) or '?'}={x['site_tag']}" for x in sites)
+    return sites[0]["site_tag"], f"Πολλά sites, διάλεξα το πρώτο. Διαθέσιμα: {listing}"
 
 def main():
     cf_token   = os.environ["CF_API_TOKEN"]
     account    = os.environ["CF_ACCOUNT_ID"]
     gh_token   = os.environ["GITHUB_TOKEN"]
     repo       = os.environ["GITHUB_REPOSITORY"]
+
+    site_tag, diag = discover_site_tag(account, cf_token)
+    print(f"site tag: {site_tag}" + (f"  [{diag}]" if diag else "  (από το API)"))
 
     day   = (datetime.now(timezone.utc) - timedelta(days=1)).date()
     start = f"{day}T00:00:00Z"
@@ -80,7 +118,7 @@ def main():
 
     res = post("https://api.cloudflare.com/client/v4/graphql",
                {"query": GQL,
-                "variables": {"account": account, "site": SITE_TAG,
+                "variables": {"account": account, "site": site_tag,
                               "start": start, "recentStart": recent,
                               "end": end, "now": now}},
                cf_token)
@@ -131,6 +169,9 @@ def main():
             f"{c['dimensions']['countryName']} {c['count']}" for c in countries))
         lines.append("")
 
+    if diag:
+        lines.append(f"> ⚠ {diag}")
+        lines.append("")
     lines.append("<sub>Cloudflare Web Analytics. Υποεκτιμά όσους έχουν "
                  "ad-blocker ή JavaScript κλειστό — διάβασέ το ως τάση.</sub>")
     body = "\n".join(lines)

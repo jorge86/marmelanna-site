@@ -121,12 +121,17 @@ Dashboard: <https://dash.cloudflare.com> → Web Analytics.
 
 | Secret | Τι είναι |
 |---|---|
-| `CLOUDFLARE_API_TOKEN` | token με δικαίωμα Account → Account Analytics → Read |
+| `CLOUDFLARE_API_TOKEN` | token με δικαιώματα Account → **Account Analytics → Read** και **Web Analytics → Read** |
 | `CLOUDFLARE_ACCOUNT_ID` | το Account ID, από τη διεύθυνση του dashboard |
 
 Το Account ID είναι secret και όχι σκληρά γραμμένο επειδή **το repo είναι
-δημόσιο**. Το site tag είναι σκληρά γραμμένο στο script, γιατί είναι ήδη
-δημόσιο — εμφανίζεται στο beacon κάθε σελίδας.
+δημόσιο**.
+
+> **Το site tag δεν είναι το token του beacon.** Μοιάζουν (και τα δύο hex
+> συμβολοσειρές) αλλά είναι διαφορετικά αναγνωριστικά. Η πρώτη εκδοχή το
+> υπέθετε: το GraphQL απαντούσε κανονικά, χωρίς σφάλμα, με μηδενικά — ενώ το
+> dashboard έδειχνε κίνηση. Το script το βρίσκει πλέον μόνο του από το
+> `rum/site_info/list`, ταιριάζοντας με το `SITE_HOST`.
 
 Για να σταματήσει: κλείσε το issue ή απενεργοποίησε το workflow στα Actions.
 Για σχόλιο μόνο όταν υπάρχει κίνηση, βάλε `ALWAYS_POST = False` στο script.
