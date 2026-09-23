@@ -81,6 +81,10 @@ def num(rows):
 def main():
     cf, account = os.environ["CF_API_TOKEN"], os.environ["CF_ACCOUNT_ID"]
     gh, repo    = os.environ["GITHUB_TOKEN"], os.environ["GITHUB_REPOSITORY"]
+    # Το issue το ανοίγει το bot, όχι ο χρήστης, οπότε το GitHub δεν τον κάνει
+    # αυτόματα συνδρομητή και δεν στέλνει μέιλ. Η αναφορά με @ ειδοποιεί πάντα,
+    # ανεξάρτητα από ρυθμίσεις watch ή subscribe.
+    owner = repo.split("/")[0]
 
     day    = (datetime.now(timezone.utc) - timedelta(days=1)).date()
     now    = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -132,6 +136,7 @@ def main():
 
     L.append("<sub>Cloudflare Web Analytics. Υποεκτιμά όσους έχουν ad-blocker ή "
              "JavaScript κλειστό — διάβασέ το ως τάση.</sub>")
+    L.append(f"<sub>@{owner}</sub>")
 
     issues = http(f"https://api.github.com/repos/{repo}/issues"
                   f"?state=open&labels={ISSUE_LABEL}&per_page=1", gh, github=True)
