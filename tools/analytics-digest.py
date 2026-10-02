@@ -18,7 +18,8 @@
 Μεταβλητές: CF_API_TOKEN, CF_ACCOUNT_ID (secrets)
             GITHUB_TOKEN, GITHUB_REPOSITORY (αυτόματα από το Actions)
 """
-import json, os, sys, urllib.request, urllib.error
+import json, os, smtplib, ssl, sys, urllib.request, urllib.error
+from email.message import EmailMessage
 from datetime import datetime, timedelta, timezone
 
 ISSUE_TITLE = "Επισκεψιμότητα — ημερήσια σύνοψη"
@@ -77,6 +78,34 @@ def num(rows):
     if not rows: return 0, 0
     r = rows[0]
     return (r.get("sum") or {}).get("visits", 0), r.get("count", 0)
+
+def send_mail(subject, text):
+    """Στέλνει τη σύνοψη με SMTP, αν υπάρχουν τα σχετικά secrets.
+
+    Προαιρετικό: χωρίς SMTP_USER/SMTP_PASS/MAIL_TO δεν κάνει τίποτα, και το
+    σχόλιο στο issue συνεχίζει κανονικά. Έτσι το workflow δεν σπάει αν κάποτε
+    αφαιρεθούν τα secrets.
+
+    Υπάρχει επειδή η ειδοποίηση του GitHub πηγαίνει σε μία μόνο διεύθυνση και
+    η προώθηση μέσω Gmail δεν ήταν εφικτή.
+    """
+    user = os.environ.get("SMTP_USER", "").strip()
+    pwd  = os.environ.get("SMTP_PASS", "").strip()
+    to   = [x.strip() for x in os.environ.get("MAIL_TO", "").split(",") if x.strip()]
+    if not (user and pwd and to):
+        print("SMTP: δεν στάλθηκε email (λείπουν SMTP_USER/SMTP_PASS/MAIL_TO)")
+        return
+    host = os.environ.get("SMTP_HOST", "smtp.gmail.com")
+    port = int(os.environ.get("SMTP_PORT", "465"))
+    msg = EmailMessage()
+    msg["Subject"] = subject
+    msg["From"] = user
+    msg["To"] = ", ".join(to)
+    msg.set_content(text)
+    with smtplib.SMTP_SSL(host, port, context=ssl.create_default_context()) as sv:
+        sv.login(user, pwd)
+        sv.send_message(msg)
+    print(f"SMTP: στάλθηκε σε {len(to)} παραλήπτες")
 
 def main():
     cf, account = os.environ["CF_API_TOKEN"], os.environ["CF_ACCOUNT_ID"]
@@ -138,6 +167,25 @@ def main():
              "JavaScript κλειστό — διάβασέ το ως τάση.</sub>")
     L.append(f"<sub>@{owner}</sub>")
 
+    # Ίδια στοιχεία σε απλό κείμενο για το email: οι markdown πίνακες και τα
+    # <sub> διαβάζονται άσχημα σε mail client.
+    T = [f"ΜαρμελΆννα — επισκεψιμότητα {day.strftime('%d/%m/%Y')}", "",
+         f"{visits} επισκέψεις, {views} προβολές σελίδων",
+         f"Τελευταίες 30 ημέρες: {r_visits} επισκέψεις, {r_views} προβολές", ""]
+    if paths:
+        T.append("Σελίδες:")
+        for p in paths:
+            path = p["dimensions"]["requestPath"]
+            T.append(f"  {path:24} {p['count']}" + ("   <- QR" if path == "/q" else ""))
+        T.append("")
+    if countries:
+        T.append("Χώρες: " + ", ".join(
+            f"{c['dimensions']['countryName']} {c['count']}" for c in countries))
+        T.append("")
+    T += ["Cloudflare Web Analytics. Υποεκτιμά όσους έχουν ad-blocker ή",
+          "JavaScript κλειστό — διάβασέ το ως τάση.", "",
+          f"https://github.com/{repo}/issues"]
+
     issues = http(f"https://api.github.com/repos/{repo}/issues"
                   f"?state=open&labels={ISSUE_LABEL}&per_page=1", gh, github=True)
     if issues:
@@ -151,6 +199,14 @@ def main():
     http(f"https://api.github.com/repos/{repo}/issues/{n}/comments", gh,
          {"body": "\n".join(L)}, github=True)
     print(f"{day}: {visits} επισκέψεις, {views} προβολές (30 ημέρες: {r_visits}) → issue #{n}")
+
+    try:
+        send_mail(f"ΜαρμελΆννα — {visits} επισκέψεις στις {day.strftime('%d/%m')}",
+                  "\n".join(T))
+    except Exception as e:
+        # Το σχόλιο γράφτηκε ήδη· μια αποτυχία SMTP δεν πρέπει να κρύψει τη σύνοψη.
+        print(f"SMTP απέτυχε: {type(e).__name__}: {e}", file=sys.stderr)
+        return 1
     return 0
 
 if __name__ == "__main__":
