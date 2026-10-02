@@ -75,14 +75,17 @@ python3 tools/build-photos.py
   ζέσταμα ώστε να δέσουν με το κρεμ, +14% αντίθεση, +12% κορεσμός, unsharp mask.
   Το script είναι στο ιστορικό του git, στο commit που τις πρόσθεσε.
 
-- `label-kontoules.jpg`, `label-krystallia.jpg`, `label-vanilies.jpg` — οι
+- `label-kontoules.jpg`, `label-krystallia.jpg`, `label-vanilies.jpg`,
+  `label-damaskina.jpg` — οι
   πραγματικές ετικέτες, από τα 600 dpi PNG του
   `../../etiketes/telikes gia diastasi 140x70/`, σμικρυμένες σε 1200×600
   (2:1, όπως τα 140×70 mm του πρωτοτύπου):
   ```bash
   sips -Z 1200 -s format jpeg -s formatOptions 78 kontoyles.png --out label-kontoules.jpg
   ```
-  Χρησιμοποιούνται ως εικόνες προϊόντος στην αρχική. Αν τυπωθεί νέα ετικέτα,
+  Χρησιμοποιούνται ως εικόνες προϊόντος στην αρχική. Η ετικέτα δαμάσκηνου
+  βρίσκεται στον υποφάκελο `370/` — στον γονικό φάκελο υπάρχει έκδοση **400 g**
+  που δεν ισχύει· πρόσεχε ποια παίρνεις. Αν τυπωθεί νέα ετικέτα,
   ξαναπέρασέ τη από την ίδια εντολή.
 - `og-image.jpg` — 1200×630, η ετικέτα Κρυστάλλια με κρεμ γέμισμα:
   ```bash
